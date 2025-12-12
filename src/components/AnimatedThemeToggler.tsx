@@ -6,18 +6,6 @@ import { flushSync } from "react-dom";
 
 import { cn } from "@/lib/utils";
 
-declare global {
-  interface Document {
-    startViewTransition?: (callback: () => void) => ViewTransition;
-  }
-
-  interface ViewTransition {
-    ready: Promise<void>;
-    finished: Promise<void>;
-    updateCallbackDone?: Promise<void>;
-  }
-}
-
 export interface AnimatedThemeTogglerProps
   extends React.ComponentPropsWithoutRef<"button"> {
   duration?: number;

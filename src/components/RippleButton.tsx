@@ -76,23 +76,54 @@ const RippleButton = React.forwardRef<
       return () => clearTimeout(timer);
     }, [ripples, duration]);
 
-    const Component = as === "a" ? "a" : "button";
-    const { type, ...restProps } = props as Record<string, unknown>;
-    const componentProps =
-      Component === "button"
-        ? { ...restProps, type: (type as string) ?? "button" }
-        : restProps;
+    const componentProps = props as any;
+
+    if (as === "a") {
+      return (
+        <a
+          className={cn(
+            "relative inline-flex items-center justify-center overflow-hidden rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-zinc-100 transition hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30",
+            className,
+          )}
+          onClick={handleClick}
+          onTouchStart={handleTouchStart}
+          ref={ref as React.Ref<HTMLAnchorElement>}
+          {...(componentProps as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+        >
+          <span className="relative z-10">{children}</span>
+          <span className="pointer-events-none absolute inset-0">
+            {ripples.map((ripple) => (
+              <span
+                key={ripple.key}
+                className="animate-rippling absolute rounded-full opacity-30"
+                style={{
+                  width: `${ripple.size}px`,
+                  height: `${ripple.size}px`,
+                  top: `${ripple.y}px`,
+                  left: `${ripple.x}px`,
+                  backgroundColor: rippleColor,
+                  animationDuration:
+                    typeof duration === "number" ? `${duration}ms` : duration,
+                  transform: "scale(0)",
+                }}
+              />
+            ))}
+          </span>
+        </a>
+      );
+    }
 
     return (
-      <Component
+      <button
         className={cn(
           "relative inline-flex items-center justify-center overflow-hidden rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-zinc-100 transition hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30",
           className,
         )}
         onClick={handleClick}
         onTouchStart={handleTouchStart}
-        ref={ref as React.Ref<HTMLButtonElement | HTMLAnchorElement>}
-        {...(componentProps as React.ComponentProps<typeof Component>)}
+        ref={ref as React.Ref<HTMLButtonElement>}
+        type="button"
+        {...(componentProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
       >
         <span className="relative z-10">{children}</span>
         <span className="pointer-events-none absolute inset-0">
@@ -113,7 +144,7 @@ const RippleButton = React.forwardRef<
             />
           ))}
         </span>
-      </Component>
+      </button>
     );
   },
 );
