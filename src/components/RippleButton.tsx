@@ -33,12 +33,26 @@ const RippleButton = React.forwardRef<
   ) => {
     const [ripples, setRipples] = useState<Ripple[]>([]);
 
-    const createRipple = (event: React.MouseEvent<RippleTarget>) => {
+    const createRipple = (event: React.MouseEvent<RippleTarget> | React.TouchEvent<RippleTarget>) => {
       const target = event.currentTarget as RippleTarget;
       const rect = target.getBoundingClientRect();
       const size = Math.max(rect.width, rect.height);
-      const x = event.clientX - rect.left - size / 2;
-      const y = event.clientY - rect.top - size / 2;
+
+      let clientX: number, clientY: number;
+      if ('touches' in event && event.touches.length > 0) {
+        // Touch event
+        clientX = event.touches[0].clientX;
+        clientY = event.touches[0].clientY;
+      } else if ('clientX' in event) {
+        // Mouse event
+        clientX = event.clientX;
+        clientY = event.clientY;
+      } else {
+        return;
+      }
+
+      const x = clientX - rect.left - size / 2;
+      const y = clientY - rect.top - size / 2;
 
       const newRipple: Ripple = { x, y, size, key: Date.now() };
       setRipples((prev) => [...prev, newRipple]);
@@ -47,6 +61,10 @@ const RippleButton = React.forwardRef<
     const handleClick = (event: React.MouseEvent<RippleTarget>) => {
       createRipple(event);
       onClick?.(event as unknown as React.MouseEvent<HTMLButtonElement>);
+    };
+
+    const handleTouchStart = (event: React.TouchEvent<RippleTarget>) => {
+      createRipple(event);
     };
 
     useEffect(() => {
@@ -72,7 +90,8 @@ const RippleButton = React.forwardRef<
           className,
         )}
         onClick={handleClick}
-        ref={ref as React.Ref<any>}
+        onTouchStart={handleTouchStart}
+        ref={ref as React.Ref<HTMLButtonElement | HTMLAnchorElement>}
         {...(componentProps as React.ComponentProps<typeof Component>)}
       >
         <span className="relative z-10">{children}</span>

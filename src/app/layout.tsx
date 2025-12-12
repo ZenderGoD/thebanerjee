@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Bishal Banerjee | Portfolio",
   description: "Full-stack engineer building immersive, performant web experiences.",
+  viewport: "width=device-width, initial-scale=1",
 };
 
 export default function RootLayout({
