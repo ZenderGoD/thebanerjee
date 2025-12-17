@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -21,7 +21,28 @@ export function ProgressiveBlur({
   hideOnEdges = true,
   children,
 }: ProgressiveBlurProps) {
-  const layers = Array.from({ length: Math.max(blurLevels.length - 2, 0) });
+  // Detect mobile device and reduce blur levels for better performance
+  const isMobile = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    ) || window.innerWidth < 768;
+  }, []);
+
+  // Reduce blur levels on mobile (use every other level)
+  const optimizedBlurLevels = useMemo(() => {
+    if (isMobile && blurLevels.length > 4) {
+      // Take first 2, then every other level
+      const reduced = [blurLevels[0], blurLevels[1]];
+      for (let i = 3; i < blurLevels.length; i += 2) {
+        reduced.push(blurLevels[i]);
+      }
+      return reduced;
+    }
+    return blurLevels;
+  }, [isMobile, blurLevels]);
+
+  const layers = Array.from({ length: Math.max(optimizedBlurLevels.length - 2, 0) });
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -79,8 +100,8 @@ export function ProgressiveBlur({
         className="absolute inset-0"
         style={{
           zIndex: 1,
-          backdropFilter: `blur(${blurLevels[0]}px)`,
-          WebkitBackdropFilter: `blur(${blurLevels[0]}px)`,
+          backdropFilter: `blur(${optimizedBlurLevels[0]}px)`,
+          WebkitBackdropFilter: `blur(${optimizedBlurLevels[0]}px)`,
           maskImage:
             position === "bottom"
               ? `linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 12.5%, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 37.5%)`
@@ -98,15 +119,17 @@ export function ProgressiveBlur({
 
       {layers.map((_, index) => {
         const blurIndex = index + 1;
-        const startPercent = blurIndex * 12.5;
-        const midPercent = (blurIndex + 1) * 12.5;
-        const endPercent = (blurIndex + 2) * 12.5;
+        const totalLayers = optimizedBlurLevels.length;
+        const segmentSize = 100 / totalLayers;
+        const startPercent = blurIndex * segmentSize;
+        const midPercent = (blurIndex + 1) * segmentSize;
+        const endPercent = (blurIndex + 2) * segmentSize;
 
         const maskGradient =
           position === "bottom"
-            ? `linear-gradient(to bottom, rgba(0,0,0,0) ${startPercent}%, rgba(0,0,0,1) ${midPercent}%, rgba(0,0,0,1) ${endPercent}%, rgba(0,0,0,0) ${endPercent + 12.5}%)`
+            ? `linear-gradient(to bottom, rgba(0,0,0,0) ${startPercent}%, rgba(0,0,0,1) ${midPercent}%, rgba(0,0,0,1) ${endPercent}%, rgba(0,0,0,0) ${endPercent + segmentSize}%)`
             : position === "top"
-              ? `linear-gradient(to top, rgba(0,0,0,0) ${startPercent}%, rgba(0,0,0,1) ${midPercent}%, rgba(0,0,0,1) ${endPercent}%, rgba(0,0,0,0) ${endPercent + 12.5}%)`
+              ? `linear-gradient(to top, rgba(0,0,0,0) ${startPercent}%, rgba(0,0,0,1) ${midPercent}%, rgba(0,0,0,1) ${endPercent}%, rgba(0,0,0,0) ${endPercent + segmentSize}%)`
               : `linear-gradient(rgba(0,0,0,0) 0%, rgba(0,0,0,1) 5%, rgba(0,0,0,1) 95%, rgba(0,0,0,0) 100%)`;
 
         return (
@@ -115,8 +138,8 @@ export function ProgressiveBlur({
             className="absolute inset-0"
             style={{
               zIndex: index + 2,
-              backdropFilter: `blur(${blurLevels[blurIndex]}px)`,
-              WebkitBackdropFilter: `blur(${blurLevels[blurIndex]}px)`,
+              backdropFilter: `blur(${optimizedBlurLevels[blurIndex]}px)`,
+              WebkitBackdropFilter: `blur(${optimizedBlurLevels[blurIndex]}px)`,
               maskImage: maskGradient,
               WebkitMaskImage: maskGradient,
             }}
@@ -127,9 +150,9 @@ export function ProgressiveBlur({
       <div
         className="absolute inset-0"
         style={{
-          zIndex: blurLevels.length,
-          backdropFilter: `blur(${blurLevels[blurLevels.length - 1]}px)`,
-          WebkitBackdropFilter: `blur(${blurLevels[blurLevels.length - 1]}px)`,
+          zIndex: optimizedBlurLevels.length,
+          backdropFilter: `blur(${optimizedBlurLevels[optimizedBlurLevels.length - 1]}px)`,
+          WebkitBackdropFilter: `blur(${optimizedBlurLevels[optimizedBlurLevels.length - 1]}px)`,
           maskImage:
             position === "bottom"
               ? `linear-gradient(to bottom, rgba(0,0,0,0) 87.5%, rgba(0,0,0,1) 100%)`

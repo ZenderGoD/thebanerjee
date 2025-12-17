@@ -2,6 +2,7 @@ import {
   ArrowUpRight,
   ExternalLink,
   Github,
+  Instagram,
   Linkedin,
   Mail,
 } from "lucide-react";
@@ -32,9 +33,10 @@ const highlights = [
 ];
 
 const links = [
-  { href: "mailto:hello@thebanerjee.dev", label: "Email", icon: Mail },
-  { href: "https://github.com/", label: "GitHub", icon: Github },
-  { href: "https://www.linkedin.com/", label: "LinkedIn", icon: Linkedin },
+  { href: "mailto:bishal@bebishal.com", label: "Email", icon: Mail },
+  { href: "https://github.com/ZenderGoD", label: "GitHub", icon: Github },
+  { href: "https://www.linkedin.com/in/bishal-banerjee-4742a8190/", label: "LinkedIn", icon: Linkedin },
+  { href: "https://www.instagram.com/ender._.man?igsh=MzNycGk5djFya2hs&utm_source=qr", label: "Instagram", icon: Instagram },
 ];
 
 export default function Home() {
@@ -137,28 +139,28 @@ export default function Home() {
                 product engineering, design systems, and immersive web
                 experiences.
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-nowrap gap-2 md:gap-4">
                 <RippleButton
                   as="a"
-                  href="mailto:hello@thebanerjee.dev?subject=Let%27s%20build%20something"
-                  className="gap-2 border-white/15 bg-[#5b4cda] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_18px_55px_-18px_rgba(91,76,218,0.75)] hover:bg-[#4a3fc0]"
+                  href="mailto:bishal@bebishal.com?subject=Let%27s%20build%20something"
+                  className="shrink-0 gap-1.5 border-white/15 bg-[#5b4cda] px-3 py-2 text-xs font-semibold text-white shadow-[0_18px_55px_-18px_rgba(91,76,218,0.75)] hover:bg-[#4a3fc0] md:gap-2 md:px-4 md:py-2.5 md:text-sm"
                   rippleColor="rgba(255,255,255,0.65)"
                   duration={680}
                 >
-                  Let&apos;s build together
-                  <ArrowUpRight className="h-4 w-4" />
+                  <span className="whitespace-nowrap">Let&apos;s build together</span>
+                  <ArrowUpRight className="h-3.5 w-3.5 shrink-0 md:h-4 md:w-4" />
                 </RippleButton>
                 <RippleButton
                   as="a"
-                  href="https://github.com/"
-                  className="gap-2 px-4 py-2.5 text-sm font-semibold text-zinc-100 hover:border-white/40 hover:bg-white/5"
+                  href="https://github.com/ZenderGoD"
+                  className="shrink-0 gap-1.5 px-3 py-2 text-xs font-semibold text-zinc-100 hover:border-white/40 hover:bg-white/5 md:gap-2 md:px-4 md:py-2.5 md:text-sm"
                   target="_blank"
                   rel="noopener noreferrer"
                   rippleColor="rgba(255,255,255,0.55)"
                   duration={540}
                 >
-                  View GitHub
-                  <ExternalLink className="h-4 w-4" />
+                  <span className="whitespace-nowrap">View GitHub</span>
+                  <ExternalLink className="h-3.5 w-3.5 shrink-0 md:h-4 md:w-4" />
                 </RippleButton>
               </div>
               <div className="flex flex-wrap gap-3 text-sm text-zinc-300">
@@ -206,28 +208,28 @@ export default function Home() {
                   collaborations that value craft.
                 </p>
               </div>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-nowrap gap-2 md:gap-3">
                 <RippleButton
                   as="a"
-                  href="mailto:hello@thebanerjee.dev"
-                  className="gap-2 border-white/30 bg-white px-4 py-2.5 text-sm font-semibold text-black hover:bg-white/90 hover:shadow-[0_10px_40px_-12px_rgba(255,255,255,0.45)]"
+                  href="mailto:bishal@bebishal.com"
+                  className="shrink-0 gap-1.5 border-white/30 bg-white px-3 py-2 text-xs font-semibold text-black hover:bg-white/90 hover:shadow-[0_10px_40px_-12px_rgba(255,255,255,0.45)] md:gap-2 md:px-4 md:py-2.5 md:text-sm"
                   rippleColor="rgba(0,0,0,0.35)"
                   duration={520}
                 >
-                  Say hello
-                  <Mail className="h-4 w-4" />
+                  <span className="whitespace-nowrap">Say hello </span>
+                  <Mail className="h-3.5 w-3.5 shrink-0 md:h-4 md:w-4" />
                 </RippleButton>
                 <RippleButton
                   as="a"
-                  href="https://www.linkedin.com/"
-                  className="gap-2 px-4 py-2.5 text-sm font-semibold text-zinc-100 hover:border-white/30 hover:bg-white/5"
+                  href="https://www.linkedin.com/in/bishal-banerjee-4742a8190/"
+                  className="shrink-0 gap-1.5 px-3 py-2 text-xs font-semibold text-zinc-100 hover:border-white/30 hover:bg-white/5 md:gap-2 md:px-4 md:py-2.5 md:text-sm"
                   target="_blank"
                   rel="noopener noreferrer"
                   rippleColor="rgba(255,255,255,0.55)"
                   duration={520}
                 >
-                  Connect on LinkedIn
-                  <ArrowUpRight className="h-4 w-4" />
+                  <span className="whitespace-nowrap">Connect on LinkedIn </span>
+                  <ArrowUpRight className="h-3.5 w-3.5 shrink-0 md:h-4 md:w-4" />
                 </RippleButton>
               </div>
             </div>

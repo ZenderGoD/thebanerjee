@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -65,6 +64,14 @@ const LightPillar: React.FC<LightPillarProps> = ({
   const [webGLSupported, setWebGLSupported] = useState<boolean>(true);
   const [agentMood, setAgentMood] = useState<string | undefined>(undefined);
   const [agentPalette, setAgentPalette] = useState<MoodPalette | undefined>(undefined);
+  
+  // Detect mobile device for performance optimizations
+  const isMobile = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    ) || window.innerWidth < 768;
+  }, []);
 
   const resolvedPalette = useMemo(
     () => agentPalette ?? pickPalette(agentMood ?? mood),
@@ -88,9 +95,9 @@ const LightPillar: React.FC<LightPillarProps> = ({
     const canvas = document.createElement("canvas");
     const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
     if (!gl) {
-      setWebGLSupported(false);
-      // eslint-disable-next-line no-console
       console.warn("WebGL is not supported in this browser");
+      // Use setTimeout to avoid synchronous setState in effect
+      setTimeout(() => setWebGLSupported(false), 0);
     }
   }, []);
 
@@ -119,14 +126,16 @@ const LightPillar: React.FC<LightPillarProps> = ({
         depth: false,
       });
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error("Failed to create WebGL renderer:", error);
-      setWebGLSupported(false);
+      // Use setTimeout to avoid synchronous setState in effect
+      setTimeout(() => setWebGLSupported(false), 0);
       return;
     }
 
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Reduce pixel ratio on mobile for better performance
+    const pixelRatio = isMobile ? 1 : Math.min(window.devicePixelRatio, 2);
+    renderer.setPixelRatio(pixelRatio);
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
@@ -139,6 +148,8 @@ const LightPillar: React.FC<LightPillarProps> = ({
       }
     `;
 
+    // Reduce shader iterations on mobile for better performance
+    const maxIterations = isMobile ? 60.0 : 100.0;
     const fragmentShader = `
       uniform float uTime;
       uniform vec2 uResolution;
@@ -203,7 +214,8 @@ const LightPillar: React.FC<LightPillarProps> = ({
           rotX = rot(uMouse.x * PI * 2.0);
         }
         vec3 color = vec3(0.0);
-        for(float i = 0.0; i < 100.0; i++) {
+        const float maxIterations = ${maxIterations.toFixed(1)};
+        for(float i = 0.0; i < maxIterations; i++) {
           vec3 pos = origin + direction * depth;
           pos.xz *= rotX;
           vec3 deformed = pos;
@@ -273,8 +285,9 @@ const LightPillar: React.FC<LightPillarProps> = ({
     }
 
     // Animation loop with fixed timestep
+    // Reduce FPS on mobile for better performance
     let lastTime = performance.now();
-    const targetFPS = 60;
+    const targetFPS = isMobile ? 30 : 60;
     const frameTime = 1000 / targetFPS;
     const animate = (currentTime: number) => {
       if (!materialRef.current || !rendererRef.current || !sceneRef.current || !cameraRef.current) return;
@@ -342,6 +355,7 @@ const LightPillar: React.FC<LightPillarProps> = ({
     noiseIntensity,
     pillarRotation,
     webGLSupported,
+    isMobile,
   ]);
 
   // Smoothly crossfade palette changes without recreating the WebGL context

@@ -76,7 +76,7 @@ const RippleButton = React.forwardRef<
       return () => clearTimeout(timer);
     }, [ripples, duration]);
 
-    const componentProps = props as any;
+    const componentProps = props as React.ButtonHTMLAttributes<HTMLButtonElement> & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
     if (as === "a") {
       return (
@@ -90,7 +90,7 @@ const RippleButton = React.forwardRef<
           ref={ref as React.Ref<HTMLAnchorElement>}
           {...(componentProps as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
         >
-          <span className="relative z-10">{children}</span>
+          <span className="relative z-10 flex items-center whitespace-nowrap">{children}</span>
           <span className="pointer-events-none absolute inset-0">
             {ripples.map((ripple) => (
               <span
@@ -125,7 +125,7 @@ const RippleButton = React.forwardRef<
         type="button"
         {...(componentProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
       >
-        <span className="relative z-10">{children}</span>
+        <span className="relative z-10 flex items-center whitespace-nowrap">{children}</span>
         <span className="pointer-events-none absolute inset-0">
           {ripples.map((ripple) => (
             <span
