@@ -13,6 +13,14 @@ import { ProgressiveBlur } from "../components/ProgressiveBlur";
 import AnimatedThemeToggler from "../components/AnimatedThemeToggler";
 import { Dock, DockIcon } from "../components/Dock";
 import RippleButton from "../components/RippleButton";
+import { Terminal, TypingAnimation, AnimatedSpan } from "@/components/ui/terminal";
+import { Marquee } from "@/components/ui/marquee";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const highlights = [
   {
@@ -74,7 +82,7 @@ export default function Home() {
 
       <div className="relative z-10 mx-auto flex max-w-5xl flex-col gap-14 px-6 py-14 md:gap-16 md:py-20">
         <MoodAuto intervalMs={28000} />
-        <header className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <header className="flex flex-col gap-6 md:grid md:grid-cols-[1.35fr_0.9fr] md:items-center md:gap-10">
           <div className="flex items-center gap-3">
             <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-zinc-200">
               Portfolio · 2025
@@ -84,7 +92,7 @@ export default function Home() {
             </span>
           </div>
           <Dock
-            className="ml-auto mt-0 h-[72px] min-w-[240px] rounded-2xl border-white/10 bg-white/5/50 p-3 shadow-[0_12px_60px_-32px_rgba(0,0,0,0.75)]"
+            className="mt-0 h-[72px] w-[374px]! rounded-2xl border-white/10 bg-white/5/50 p-3 shadow-[0_12px_60px_-32px_rgba(0,0,0,0.75)] justify-self-end"
             iconSize={88}
             iconMagnification={120}
             iconDistance={180}
@@ -124,15 +132,15 @@ export default function Home() {
           </Dock>
         </header>
 
-        <main className="space-y-16 md:space-y-18">
-          <section className="grid gap-10 lg:grid-cols-[1.35fr_0.9fr] lg:items-start">
-            <div className="space-y-6">
+        <main className="space-y-16 md:space-y-18 w-full relative">
+          <section className="grid gap-10 lg:grid-cols-[1.35fr_0.9fr] lg:items-start w-full relative">
+            <div className="space-y-6 w-full min-w-0">
               <p className="text-sm uppercase tracking-[0.25em] text-zinc-400">
                 Bishal Banerjee · Full-stack engineer
               </p>
-              <h1 className="text-4xl font-semibold leading-tight text-white md:text-5xl">
+              <h1 className="text-4xl font-semibold leading-tight text-white md:text-5xl break-words">
                 I build web products that feel fast, thoughtful, and alive.
-          </h1>
+              </h1>
               <p className="max-w-3xl text-lg text-zinc-300">
                 I care about the details—clean architecture, reliable delivery,
                 and interfaces that respect a user&apos;s time. My work spans
@@ -163,34 +171,66 @@ export default function Home() {
                   <ExternalLink className="h-3.5 w-3.5 shrink-0 md:h-4 md:w-4" />
                 </RippleButton>
               </div>
-              <div className="flex flex-wrap gap-3 text-sm text-zinc-300">
-                {["Next.js & TypeScript", "Design systems", "Realtime UX", "3D & motion"].map(
-                  (item) => (
+            </div>
+
+            <div className="w-full min-w-0">
+              <Accordion type="single" collapsible className="w-full">
+                {highlights.map((item, index) => (
+                  <AccordionItem 
+                    key={item.title} 
+                    value={`item-${index}`} 
+                    className="border-transparent"
+                  >
+                    <AccordionTrigger className="text-lg font-semibold text-white hover:no-underline data-[state=open]:text-white">
+                      {item.title}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm leading-6 text-zinc-300">
+                      {item.description}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </section>
+          
+          <div className="relative w-full overflow-hidden py-2">
+            <Marquee pauseOnHover className="gap-3">
+                  {[
+                    "Next.js & TypeScript",
+                    "React",
+                    "Python",
+                    "JavaScript",
+                    "FastAPI",
+                    "Flask",
+                    "PyTorch",
+                    "TensorFlow",
+                    "Transformers",
+                    "Computer Vision",
+                    "NLP",
+                    "Multi-modal AI",
+                    "AWS",
+                    "GCP Vertex AI",
+                    "Azure ML",
+                    "Cloudflare",
+                    "Docker",
+                    "CI/CD",
+                    "SQL",
+                    "Design systems",
+                    "Realtime UX",
+                    "3D & motion",
+                    "System Design",
+                    "ML Optimization",
+                    "Production Deployment",
+                  ].map((item) => (
                     <span
                       key={item}
-                      className="rounded-full border border-white/10 bg-white/5 px-3 py-1"
+                      className="shrink-0 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-zinc-300"
                     >
                       {item}
                     </span>
-                  ),
-                )}
-              </div>
-            </div>
-
-            <div className="grid gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-[0_20px_80px_-30px_rgba(0,0,0,0.9)]">
-              {highlights.map((item) => (
-                <div
-                  key={item.title}
-                  className="rounded-xl border border-white/5 bg-black/20 p-4 shadow-[0_10px_40px_-28px_rgba(0,0,0,0.7)]"
-                >
-                  <h3 className="text-lg font-semibold text-white">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-zinc-300">
-                    {item.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
+                  ))}
+            </Marquee>
+          </div>
           <section
             id="contact"
             className="rounded-2xl border border-white/10 bg-linear-to-r from-white/10 via-white/5 to-white/10 p-8 shadow-[0_20px_100px_-40px_rgba(0,0,0,0.6)]"
@@ -233,6 +273,125 @@ export default function Home() {
                 </RippleButton>
               </div>
             </div>
+          </section>
+          <section className="rounded-2xl border border-white/10 bg-linear-to-r from-white/10 via-white/5 to-white/10 p-8 shadow-[0_20px_100px_-40px_rgba(0,0,0,0.6)]">
+            <Terminal className="border-white/30 bg-black/60 text-zinc-100 shadow-lg w-full" startOnView={false}>
+              <TypingAnimation>$ whoami</TypingAnimation>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Bishal Banerjee
+              </AnimatedSpan>
+              <AnimatedSpan className="opacity-50">Full-Stack Engineer & AI/ML Specialist</AnimatedSpan>
+
+              <TypingAnimation delay={200}>$ cat contact.txt</TypingAnimation>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Email: bishal@bebishal.com
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Website: bebishal.com
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Phone: +91-9972801985
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Location: Vellore, India
+              </AnimatedSpan>
+
+              <TypingAnimation delay={200}>$ cat summary.txt</TypingAnimation>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Engineer focused on building scalable AI-powered products
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Strong system design, production deployment, and ML optimization experience
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Shipped multiple live platforms, authored multi-modal AI research
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Optimized real-world inference pipelines
+              </AnimatedSpan>
+
+              <TypingAnimation delay={200}>$ cat experience.txt</TypingAnimation>
+              
+              <AnimatedSpan className="mt-2 text-yellow-300">=== IMAI Studio — Backend & Full-Stack Engineer ===</AnimatedSpan>
+              <AnimatedSpan className="opacity-75">Jan 2025 – Present</AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Architected AI platform serving 10K+ DAUs with 99.9% uptime
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Reduced API latency by 50% via system and ML optimization
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Improved inference performance by 30% through model analysis
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Led CI/CD pipelines reducing deployment time from hours to minutes
+              </AnimatedSpan>
+
+              <AnimatedSpan className="mt-4 text-yellow-300">=== The House of RARE — Data Science Engineer (Trainee) ===</AnimatedSpan>
+              <AnimatedSpan className="opacity-75">Jun 2024 – Dec 2024</AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Built ETL pipelines and ML models for business forecasting
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Designed PowerBI dashboards enabling data-driven decisions
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Optimized SQL queries and data validation for 99.9% data integrity
+              </AnimatedSpan>
+
+              <TypingAnimation delay={200}>$ cat projects.txt</TypingAnimation>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Forest Fire & Cyclone Detection — Vision Transformers on satellite imagery (92%+ accuracy)
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Multi-Modal Stock Market Prediction — NLP + time-series ML with 15% uplift
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Outfit Recommendation System — GenAI-powered conversational recommender
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> IMAI Backend System — scalable AI infra with 30% inference optimization
+              </AnimatedSpan>
+
+              <TypingAnimation delay={200}>$ cat skills.txt</TypingAnimation>
+              <AnimatedSpan className="text-cyan-300">Languages:</AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Python, JavaScript, TypeScript, SQL
+              </AnimatedSpan>
+              <AnimatedSpan className="text-cyan-300">Frameworks:</AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> Next.js, React, FastAPI, Flask
+              </AnimatedSpan>
+              <AnimatedSpan className="text-cyan-300">AI/ML:</AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> PyTorch, TensorFlow, Transformers, CV, NLP, Multi-modal
+              </AnimatedSpan>
+              <AnimatedSpan className="text-cyan-300">Infra:</AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> AWS, GCP Vertex AI, Azure ML, Cloudflare, Docker, CI/CD
+              </AnimatedSpan>
+
+              <TypingAnimation delay={200}>$ cat education.txt</TypingAnimation>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> M.Tech CSE (AI & ML) — VIT Vellore (CGPA: 8.05)
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> B.Tech Mechatronics — REVA University (CGPA: 8.4)
+              </AnimatedSpan>
+              <AnimatedSpan>
+                <span className="text-green-400">→</span> B.S. Data Science — IIT Madras (CGPA: 7.95)
+              </AnimatedSpan>
+
+              <TypingAnimation delay={200}>$ echo "Available commands: whoami, cat [contact|summary|experience|projects|skills|education].txt"</TypingAnimation>
+              <AnimatedSpan className="text-blue-400">
+                <span className="text-green-400">→</span> Available commands: whoami, cat [contact|summary|experience|projects|skills|education].txt
+              </AnimatedSpan>
+
+              <TypingAnimation delay={200}>$ </TypingAnimation>
+              <AnimatedSpan className="inline-flex items-center gap-1">
+                <span className="animate-pulse">█</span>
+              </AnimatedSpan>
+            </Terminal>
           </section>
       </main>
 
