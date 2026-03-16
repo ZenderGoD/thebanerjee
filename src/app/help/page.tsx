@@ -1,171 +1,277 @@
-"use client"
-
-import { Terminal, TypingAnimation, AnimatedSpan } from "@/components/ui/terminal"
-import LightPillar from "@/components/LightPillar"
-import { ProgressiveBlur } from "@/components/ProgressiveBlur"
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import Link from "next/link";
+import { ArrowLeft, ArrowUpRight, MoveRight } from "lucide-react";
+import {
+  contactCards,
+  education,
+  experience,
+  profile,
+  projects,
+  skillsGroups,
+} from "@/lib/portfolioData";
 
 export default function HelpPage() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-linear-to-br from-[#030712] via-[#050816] to-[#04060f] text-zinc-50">
-      <div className="pointer-events-none absolute inset-0">
-        <LightPillar
-          rotationSpeed={0.32}
-          glowAmount={0.0045}
-          pillarWidth={3.1}
-          pillarHeight={0.42}
-          noiseIntensity={0.35}
-          pillarRotation={10}
-          mixBlendMode="screen"
-          enableMoodListener
-          className="opacity-60"
-        />
-        <div className="absolute left-[-20%] top-[-10%] h-80 w-80 rounded-full bg-[#3b2f8f]/14 blur-3xl" />
-        <div className="absolute right-[-10%] top-[20%] h-96 w-96 rounded-full bg-[#1c3f66]/12 blur-3xl" />
-        <div className="absolute bottom-[-5%] left-[10%] h-72 w-72 rounded-full bg-[#7a3d1d]/7 blur-3xl" />
-      </div>
+    <div className="relative overflow-hidden py-8 text-[var(--foreground)] sm:py-10">
+      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <Link href="/" className="portfolio-btn-neo max-w-max text-sm font-semibold">
+            <ArrowLeft className="h-4 w-4" />
+            Back to home
+          </Link>
 
-      <ProgressiveBlur
-        position="top"
-        height="18%"
-        blurLevels={[0.25, 0.6, 1.1, 1.8, 2.8, 4, 5.6, 7.5]}
-        className="z-20"
-      />
-      <ProgressiveBlur
-        position="bottom"
-        height="22%"
-        blurLevels={[0.3, 0.65, 1.2, 2, 3.1, 4.5, 6.2, 8.2]}
-        className="z-20"
-      />
+          <div className="portfolio-punch max-w-max px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--foreground)]">
+            Full dossier
+          </div>
+        </div>
 
-      <div className="relative z-10 mx-auto flex max-w-6xl flex-col gap-8 px-6 py-14 md:py-20">
-        <Link
-          href="/"
-          className="group mb-4 flex items-center gap-2 text-sm text-zinc-400 transition-colors hover:text-zinc-200"
+        <section
+          className="portfolio-brutal p-6 sm:p-8 lg:p-10"
+          style={{ background: "linear-gradient(145deg, #f8f5ef, #ece7df)" }}
         >
-          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-          Back to home
-        </Link>
+          <span className="portfolio-spec-label">Overview</span>
+          <p className="mono-font mt-5 text-xs uppercase tracking-[0.34em] text-[var(--muted)]">
+            {profile.name} / {profile.role}
+          </p>
+          <h1 className="display-font mt-4 max-w-4xl text-5xl leading-[0.92] sm:text-6xl">
+            The full profile behind the portfolio.
+          </h1>
+          <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--muted)]">
+            Engineer focused on scalable AI-powered products, strong system design, production
+            deployment, and interfaces that feel intentional.
+          </p>
 
-        <Terminal className="border-white/30 bg-black/60 text-zinc-100 shadow-lg">
-            <TypingAnimation>$ whoami</TypingAnimation>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Bishal Banerjee
-            </AnimatedSpan>
-            <AnimatedSpan className="opacity-50">Full-Stack Engineer & AI/ML Specialist</AnimatedSpan>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <a href={`mailto:${profile.email}`} className="portfolio-btn-brutal text-sm font-semibold">
+              Email Bishal
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+            <a
+              href="https://github.com/ZenderGoD"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="portfolio-btn-neo text-sm font-semibold"
+            >
+              GitHub
+              <MoveRight className="h-4 w-4" />
+            </a>
+          </div>
+        </section>
 
-            <TypingAnimation delay={200}>$ cat contact.txt</TypingAnimation>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Email: bishal@bebishal.com
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Website: bebishal.com
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Phone: +91-9972801985
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Location: Vellore, India
-            </AnimatedSpan>
+        <section className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
+          <article className="portfolio-neo p-6 sm:p-8">
+            <span className="portfolio-spec-label">Contact</span>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              {contactCards.map((card) => {
+                const Icon = card.icon;
+                const isDisabled = card.href === "#";
 
-            <TypingAnimation delay={200}>$ cat summary.txt</TypingAnimation>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Engineer focused on building scalable AI-powered products
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Strong system design, production deployment, and ML optimization experience
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Shipped multiple live platforms, authored multi-modal AI research
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Optimized real-world inference pipelines
-            </AnimatedSpan>
+                return isDisabled ? (
+                  <div key={card.label} className="portfolio-inset p-5">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-2xl border border-[var(--outline)] bg-[rgba(248,245,239,0.8)] p-2">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className="mono-font text-xs uppercase tracking-[0.22em] text-[var(--muted)]">
+                          {card.label}
+                        </p>
+                        <p className="mt-2 text-sm font-semibold text-[var(--foreground)]">
+                          {card.value}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <a key={card.label} href={card.href} className="portfolio-inset p-5">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-2xl border border-[var(--outline)] bg-[rgba(248,245,239,0.8)] p-2">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className="mono-font text-xs uppercase tracking-[0.22em] text-[var(--muted)]">
+                          {card.label}
+                        </p>
+                        <p className="mt-2 text-sm font-semibold text-[var(--foreground)]">
+                          {card.value}
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </article>
 
-            <TypingAnimation delay={200}>$ cat experience.txt</TypingAnimation>
-            
-            <AnimatedSpan className="mt-2 text-yellow-300">=== IMAI Studio — Backend & Full-Stack Engineer ===</AnimatedSpan>
-            <AnimatedSpan className="opacity-75">Jan 2025 – Present</AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Architected AI platform serving 10K+ DAUs with 99.9% uptime
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Reduced API latency by 50% via system and ML optimization
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Improved inference performance by 30% through model analysis
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Led CI/CD pipelines reducing deployment time from hours to minutes
-            </AnimatedSpan>
+          <article className="portfolio-sheet p-6 sm:p-8">
+            <span className="portfolio-spec-label">Snapshot</span>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              <div className="portfolio-inset p-5">
+                <p className="mono-font text-xs uppercase tracking-[0.22em] text-[var(--muted)]">
+                  Current role
+                </p>
+                <p className="mt-3 text-sm leading-7 text-[var(--foreground)]">
+                  Backend and full-stack engineer building AI infrastructure and product flows at
+                  IMAI Studio.
+                </p>
+              </div>
+              <div className="portfolio-inset p-5">
+                <p className="mono-font text-xs uppercase tracking-[0.22em] text-[var(--muted)]">
+                  Core strengths
+                </p>
+                <p className="mt-3 text-sm leading-7 text-[var(--foreground)]">
+                  System design, ML optimization, production deployment, and UX-aware engineering.
+                </p>
+              </div>
+              <div className="portfolio-inset p-5 sm:col-span-2">
+                <p className="mono-font text-xs uppercase tracking-[0.22em] text-[var(--muted)]">
+                  Summary
+                </p>
+                <p className="mt-3 text-sm leading-7 text-[var(--foreground)]">
+                  Built live platforms, authored multi-modal AI research, optimized real-world
+                  inference pipelines, and shipped product work that balances polish with reliability.
+                </p>
+              </div>
+            </div>
+          </article>
+        </section>
 
-            <AnimatedSpan className="mt-4 text-yellow-300">=== The House of RARE — Data Science Engineer (Trainee) ===</AnimatedSpan>
-            <AnimatedSpan className="opacity-75">Jun 2024 – Dec 2024</AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Built ETL pipelines and ML models for business forecasting
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Designed PowerBI dashboards enabling data-driven decisions
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Optimized SQL queries and data validation for 99.9% data integrity
-            </AnimatedSpan>
+        <section className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
+          <article
+            className="portfolio-brutal p-6 sm:p-8"
+            style={{ background: "linear-gradient(145deg, #f8f5ef, #ece7df)" }}
+          >
+            <span className="portfolio-spec-label">Experience</span>
+            <div className="mt-6 space-y-4">
+              {experience.map((item) => (
+                <article key={item.company} className="portfolio-inset p-5">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                      <h2 className="display-font text-2xl leading-tight">{item.company}</h2>
+                      <p className="mt-1 text-sm font-semibold text-[var(--foreground)]">
+                        {item.role}
+                      </p>
+                    </div>
+                    <p className="mono-font text-xs uppercase tracking-[0.25em] text-[var(--muted)]">
+                      {item.period}
+                    </p>
+                  </div>
+                  <ul className="mt-4 space-y-3 text-sm leading-7 text-[var(--foreground)]">
+                    {item.bullets.map((bullet) => (
+                      <li key={bullet} className="flex gap-3">
+                        <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--accent-blue)] shadow-[0_0_0_4px_rgba(77,130,255,0.12)]" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </article>
 
-            <TypingAnimation delay={200}>$ cat projects.txt</TypingAnimation>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Forest Fire & Cyclone Detection — Vision Transformers on satellite imagery (92%+ accuracy)
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Multi-Modal Stock Market Prediction — NLP + time-series ML with 15% uplift
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Outfit Recommendation System — GenAI-powered conversational recommender
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> IMAI Backend System — scalable AI infra with 30% inference optimization
-            </AnimatedSpan>
+          <article className="portfolio-neo p-6 sm:p-8">
+            <span className="portfolio-spec-label">Education</span>
+            <div className="mt-6 grid gap-4">
+              {education.map((item) => (
+                <article key={item.degree} className="portfolio-inset p-5">
+                  <p className="display-font text-2xl leading-tight">{item.degree}</p>
+                  <p className="mt-2 text-sm font-semibold text-[var(--foreground)]">{item.school}</p>
+                  <p className="mt-2 text-sm text-[var(--muted)]">{item.details}</p>
+                </article>
+              ))}
+            </div>
+          </article>
+        </section>
 
-            <TypingAnimation delay={200}>$ cat skills.txt</TypingAnimation>
-            <AnimatedSpan className="text-cyan-300">Languages:</AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Python, JavaScript, TypeScript, SQL
-            </AnimatedSpan>
-            <AnimatedSpan className="text-cyan-300">Frameworks:</AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> Next.js, React, FastAPI, Flask
-            </AnimatedSpan>
-            <AnimatedSpan className="text-cyan-300">AI/ML:</AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> PyTorch, TensorFlow, Transformers, CV, NLP, Multi-modal
-            </AnimatedSpan>
-            <AnimatedSpan className="text-cyan-300">Infra:</AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> AWS, GCP Vertex AI, Azure ML, Cloudflare, Docker, CI/CD
-            </AnimatedSpan>
+        <section className="portfolio-sheet p-6 sm:p-8">
+          <span className="portfolio-spec-label">Selected projects</span>
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {projects.map((project, index) => {
+              const Icon = project.icon;
+              const cardClass =
+                index % 2 === 0 ? "portfolio-brutal" : "portfolio-neo";
 
-            <TypingAnimation delay={200}>$ cat education.txt</TypingAnimation>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> M.Tech CSE (AI & ML) — VIT Vellore (CGPA: 8.05)
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> B.Tech Mechatronics — REVA University (CGPA: 8.4)
-            </AnimatedSpan>
-            <AnimatedSpan>
-              <span className="text-green-400">→</span> B.S. Data Science — IIT Madras (CGPA: 7.95)
-            </AnimatedSpan>
+              return (
+                <article
+                  key={project.title}
+                  className={`${cardClass} p-5`}
+                  style={{
+                    background:
+                      project.tone === "blue"
+                        ? "linear-gradient(145deg, #dde6ff, #f0f4ff)"
+                        : project.tone === "pink"
+                          ? "linear-gradient(145deg, #f2e1e7, #f8edf0)"
+                          : project.tone === "mint"
+                            ? "linear-gradient(145deg, #dcebd7, #edf6eb)"
+                            : "linear-gradient(145deg, #f8f5ef, #ece7df)",
+                  }}
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="portfolio-spec-label">{project.tag}</span>
+                    <div className="rounded-2xl border border-[var(--outline)] bg-[rgba(248,245,239,0.8)] p-2">
+                      <Icon className="h-4 w-4" />
+                    </div>
+                  </div>
+                  <h2 className="display-font mt-4 text-2xl leading-tight">{project.title}</h2>
+                  <p className="mt-3 text-sm leading-7 text-[var(--foreground)]">{project.summary}</p>
+                  <p className="mt-4 text-sm font-semibold text-[var(--muted)]">{project.result}</p>
+                </article>
+              );
+            })}
+          </div>
+        </section>
 
-            <TypingAnimation delay={200}>$ echo "Available commands: whoami, cat [contact|summary|experience|projects|skills|education].txt"</TypingAnimation>
-            <AnimatedSpan className="text-blue-400">
-              <span className="text-green-400">→</span> Available commands: whoami, cat [contact|summary|experience|projects|skills|education].txt
-            </AnimatedSpan>
+        <section className="grid gap-6 xl:grid-cols-[1fr_1fr]">
+          <article className="portfolio-sheet p-6 sm:p-8">
+            <span className="portfolio-spec-label">Skills</span>
+            <div className="mt-6 grid gap-4">
+              {skillsGroups.map((group) => {
+                const Icon = group.icon;
+                return (
+                  <article key={group.title} className="portfolio-inset p-5">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-2xl border border-[var(--outline)] bg-[rgba(248,245,239,0.8)] p-2">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <p className="display-font text-2xl leading-tight">{group.title}</p>
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-3">
+                      {group.items.map((item) => (
+                        <span key={item} className="portfolio-btn-neo px-4 py-2 text-sm font-semibold">
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </article>
 
-            <TypingAnimation delay={200}>$ </TypingAnimation>
-            <AnimatedSpan className="inline-flex items-center gap-1">
-              <span className="animate-pulse">█</span>
-            </AnimatedSpan>
-          </Terminal>
+          <article
+            className="portfolio-brutal p-6 sm:p-8"
+            style={{ background: "linear-gradient(145deg, #f4e3a6, #fbf1cc)" }}
+          >
+            <span className="portfolio-spec-label">Work with me</span>
+            <h2 className="display-font mt-4 text-4xl leading-tight">
+              Looking for a builder who can move from model behavior to product polish?
+            </h2>
+            <p className="mt-4 text-base leading-8 text-[var(--foreground)]">
+              I&apos;m especially interested in product teams that want strong engineering judgment,
+              clearer systems, and a visual point of view that does not flatten into templates.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-4">
+              <a href={`mailto:${profile.email}`} className="portfolio-btn-brutal text-sm font-semibold">
+                Start a conversation
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <Link href="/" className="portfolio-btn-neo text-sm font-semibold">
+                Back to portfolio
+                <ArrowLeft className="h-4 w-4" />
+              </Link>
+            </div>
+          </article>
+        </section>
       </div>
     </div>
-  )
+  );
 }
