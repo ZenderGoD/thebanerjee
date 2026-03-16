@@ -7,10 +7,10 @@ import {
   Github,
   Globe,
   GraduationCap,
+  Instagram,
   Linkedin,
   Mail,
   MapPin,
-  PhoneCall,
   Radar,
   Sparkles,
   TrendingUp,
@@ -61,10 +61,9 @@ export type EducationItem = {
 export const profile = {
   name: "Bishal Banerjee",
   role: "Full-stack engineer and AI/ML specialist",
-  location: "Vellore, India",
+  location: "Bangalore, India",
   email: "bishal@bebishal.com",
   website: "bebishal.com",
-  phone: "+91-9972801985",
   currentRole: "Backend and Full-Stack Engineer at IMAI Studio",
   availability: "Open to ambitious teams, product collaborations, and high-craft builds.",
 };
@@ -82,7 +81,7 @@ export const socialLinks: SocialLink[] = [
 
 export const heroBadges = [
   { icon: Sparkles, label: "Available for 2026 builds" },
-  { icon: MapPin, label: "Based in Vellore, India" },
+  { icon: MapPin, label: "Based in Bangalore, India" },
   { icon: Globe, label: "Shipping product, platform, and AI work" },
 ];
 
@@ -266,7 +265,7 @@ export const education: EducationItem[] = [
 export const contactCards = [
   { label: "Email", value: profile.email, href: `mailto:${profile.email}`, icon: Mail },
   { label: "Website", value: profile.website, href: "https://bebishal.com", icon: Globe },
-  { label: "Phone", value: profile.phone, href: `tel:${profile.phone}`, icon: PhoneCall },
+  { label: "Instagram", value: "@ender._.man", href: "https://instagram.com/ender._.man", icon: Instagram },
   { label: "Location", value: profile.location, href: "#", icon: MapPin },
 ];
 
