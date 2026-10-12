@@ -68,7 +68,7 @@ export default function Home() {
           className="relative grid min-h-[100dvh] grid-cols-1 overflow-hidden px-5 pt-24 pb-10 md:grid-cols-12 md:px-8 md:pt-20"
         >
           <div className="relative z-10 flex flex-col justify-end md:col-span-7 md:pb-8 lg:pl-40">
-            <h1 className="display text-[clamp(72px,9.6vw,172px)]" data-hero-title data-depth="-10">
+            <h1 className="display text-[clamp(72px,9.6vw,172px)]" data-hero-title data-depth="-22">
               <span className="block overflow-hidden pb-[0.04em]">
                 <span className="block" data-rise>
                   Bishal
@@ -94,11 +94,11 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative mt-10 md:col-span-5 md:mt-0" data-hero-plate data-depth="16">
+          <div className="relative mt-10 md:col-span-5 md:mt-0" data-hero-plate data-depth="30">
             <div
               className="absolute top-[9%] left-[30%] aspect-square w-[46%] rounded-full bg-red"
               data-sun
-              data-depth="34"
+              data-depth="64"
               aria-hidden
             />
             <Image
@@ -114,7 +114,7 @@ export default function Home() {
         {/* II. The rocket */}
         <section id="rocket" data-chapter="rocket" className="relative" data-rocket>
           <div className="relative flex min-h-[100dvh] bg-paper flex-col justify-center overflow-hidden px-5 py-24 md:px-8 lg:pl-48">
-            <h2 className="display relative z-10 text-[clamp(56px,9vw,150px)]">
+            <h2 className="display relative z-10 text-[clamp(56px,9vw,150px)]" data-depth="-16">
               Mechatronics
               <br />
               <span className="text-red">first.</span>
@@ -126,12 +126,15 @@ export default function Home() {
                 sizes="(min-width: 768px) 62vw, 100vw"
                 className="ink h-auto w-full"
                 data-draw
+                data-depth="26"
               />
             </div>
             <ol className="relative z-10 mt-10 grid max-w-[460px] gap-4 md:mt-12">
               {rocketCaptions.map((c, i) => (
                 <li key={i} data-caption style={{ marginLeft: `${i * 22}px` }}>
-                  <Caption text={c.text} />
+                  <div data-depth={-8 - i * 5}>
+                    <Caption text={c.text} />
+                  </div>
                 </li>
               ))}
             </ol>
@@ -152,12 +155,13 @@ export default function Home() {
               Which shirt goes to <span className="text-red">which store.</span>
             </h2>
             <div className="relative md:col-span-4" data-float>
-              <div className="absolute -top-4 -left-4 h-full w-full bg-red" aria-hidden />
+              <div className="absolute -top-4 -left-4 h-full w-full bg-red" data-depth="44" aria-hidden />
               <Image
                 src={tailor}
                 alt="Jost Amman's 1568 woodcut of a tailor's workshop, with garments hanging from a rail."
                 sizes="(min-width: 768px) 30vw, 90vw"
                 className="relative h-auto w-full border-[1.5px] border-ink bg-paper grayscale"
+                data-depth="16"
               />
             </div>
           </div>
@@ -190,6 +194,7 @@ export default function Home() {
               sizes="(min-width: 768px) 50vw, 100vw"
               className="ink h-auto w-full md:h-full md:object-cover md:object-top"
               data-jerome-img
+              data-depth="14"
             />
           </div>
           <div className="flex flex-col justify-center gap-10 px-5 py-24 md:min-h-[150dvh] md:px-12 lg:px-16">
@@ -223,10 +228,12 @@ export default function Home() {
               sizes="(min-width: 768px) 46vw, 100vw"
               className="ink pointer-events-none mb-10 h-auto w-full md:absolute md:top-20 md:right-0 md:mb-0 md:w-[46%]"
               data-tube
+              data-depth="22"
             />
             <div className="relative z-10 max-w-[560px]">
               <Image
                 src={wisperIcon}
+                data-depth="-26"
                 alt="The Wisper Back app icon."
                 sizes="88px"
                 className="h-[72px] w-[72px] md:h-[88px] md:w-[88px]"
@@ -283,6 +290,7 @@ export default function Home() {
               Small things, looked at <span className="text-red">closely.</span>
             </h2>
             <Lens
+              depth={24}
               src={flea}
               alt="Robert Hooke's 1665 engraving of a flea seen through a microscope."
               className="mt-8 w-full md:absolute md:top-[10px] md:right-[-4%] md:mt-0 md:w-[46%]"
@@ -422,12 +430,13 @@ export default function Home() {
               src={flammarion}
               alt="The Flammarion engraving: a traveller kneels at the edge of the sky and pushes his head through to see the workings beyond."
               sizes="100vw"
-              className="ink h-full w-full object-cover"
+              className="ink h-full w-full scale-[1.06] object-cover"
+              data-depth="18"
             />
           </div>
           <div className="relative z-10 flex min-h-[100dvh] flex-col justify-end px-5 pb-10 md:px-8 lg:pl-48">
             <div className="max-w-[900px] border-[1.5px] border-ink bg-paper p-6 shadow-[6px_6px_0_var(--color-ink)] md:p-10" data-card>
-              <h2 className="display text-[clamp(56px,8vw,132px)]">
+              <h2 className="display text-[clamp(56px,8vw,132px)]" data-depth="-12">
                 Let&apos;s build <span className="text-red">something.</span>
               </h2>
               <a

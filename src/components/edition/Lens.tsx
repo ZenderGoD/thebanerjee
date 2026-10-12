@@ -9,7 +9,7 @@ const ZOOM = 2.6;
 
 // A magnifying glass over an engraving: it follows a fine pointer and shows the plate up close.
 // Touch screens and reduced motion get the plate alone.
-export function Lens({ src, alt, className }: { src: StaticImageData; alt: string; className?: string }) {
+export function Lens({ src, alt, className, depth }: { src: StaticImageData; alt: string; className?: string; depth?: number }) {
   const wrap = useRef<HTMLDivElement>(null);
   const glass = useRef<HTMLDivElement>(null);
 
@@ -45,7 +45,7 @@ export function Lens({ src, alt, className }: { src: StaticImageData; alt: strin
   }, []);
 
   return (
-    <div ref={wrap} className={`relative bg-paper ${className ?? ""}`} data-flea>
+    <div ref={wrap} className={`relative bg-paper ${className ?? ""}`} data-flea data-depth={depth}>
       <Image src={src} alt={alt} sizes="(min-width: 768px) 46vw, 100vw" className="ink h-auto w-full" />
       <div
         ref={glass}

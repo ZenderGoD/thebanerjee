@@ -115,7 +115,7 @@ export function Choreography() {
       gsap.fromTo(
         "[data-jerome-img]",
         { scale: 1.12 },
-        { scale: 1, ease: "none", scrollTrigger: { trigger: "#imai", start: "top bottom", end: "bottom bottom", scrub: true } },
+        { scale: 1.05, ease: "none", scrollTrigger: { trigger: "#imai", start: "top bottom", end: "bottom bottom", scrub: true } },
       );
       gsap.to("[data-tube]", {
         yPercent: 18,
@@ -233,25 +233,23 @@ export function Choreography() {
     mm.add("(prefers-reduced-motion: no-preference) and (pointer: fine)", () => {
       const cleanups: (() => void)[] = [];
 
-      // I. The opening has depth: the sun, the plate and the name move apart under the pointer.
-      const hero = document.querySelector<HTMLElement>("#prologue");
-      if (hero) {
-        const layers = q("[data-depth]").map((el) => ({
-          depth: Number(el.getAttribute("data-depth")),
-          x: gsap.quickTo(el, "x", { duration: 0.9, ease: "power3.out" }),
-          y: gsap.quickTo(el, "y", { duration: 0.9, ease: "power3.out" }),
-        }));
-        const move = (e: PointerEvent) => {
-          const nx = e.clientX / window.innerWidth - 0.5;
-          const ny = e.clientY / window.innerHeight - 0.5;
-          layers.forEach((l) => {
-            l.x(nx * l.depth);
-            l.y(ny * l.depth);
-          });
-        };
-        hero.addEventListener("pointermove", move);
-        cleanups.push(() => hero.removeEventListener("pointermove", move));
-      }
+      // Every chapter has depth: engravings, red shapes, captions and titles each sit on their
+      // own layer and drift with the pointer. Positive depths follow it, negative ones move away.
+      const layers = q("[data-depth]").map((el) => ({
+        depth: Number(el.getAttribute("data-depth")),
+        x: gsap.quickTo(el, "x", { duration: 1.1, ease: "power3.out" }),
+        y: gsap.quickTo(el, "y", { duration: 1.1, ease: "power3.out" }),
+      }));
+      const follow = (e: PointerEvent) => {
+        const nx = e.clientX / window.innerWidth - 0.5;
+        const ny = e.clientY / window.innerHeight - 0.5;
+        layers.forEach((l) => {
+          l.x(nx * l.depth);
+          l.y(ny * l.depth);
+        });
+      };
+      window.addEventListener("pointermove", follow);
+      cleanups.push(() => window.removeEventListener("pointermove", follow));
 
       // Project shots lean toward the pointer.
       q("[data-tilt]").forEach((card) => {
