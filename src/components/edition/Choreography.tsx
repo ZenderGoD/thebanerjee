@@ -200,18 +200,51 @@ export function Choreography() {
         });
       });
 
-      // Beliefs stack: each card settles on the last, and the ones beneath sink back.
-      const cards = q("[data-belief]");
-      cards.forEach((card, i) => {
-        const next = cards[i + 1];
-        if (!next) return;
-        gsap.to(card, {
-          scale: 0.94,
-          transformOrigin: "50% 0%",
-          ease: "none",
-          scrollTrigger: { trigger: next, start: "top 60%", end: () => `top ${Math.round(window.innerHeight * 0.13 + (i + 1) * 26)}px`, scrub: true },
+      // What I believe: the chapter holds still and each belief is dealt onto a pile. A card rises
+      // from below, lands a little askew on top, and the ones beneath edge back and up so the pile
+      // shows its edges.
+      const beliefSection = document.querySelector<HTMLElement>("[data-beliefs]");
+      const deck = document.querySelector<HTMLElement>("[data-deck]");
+      const dealt = q("[data-belief]");
+      let deal: gsap.core.Timeline | undefined;
+      if (beliefSection && deck && dealt.length) {
+        deck.dataset.live = "true";
+        const tilt = [-1.6, 2.2, -2.8, 1.4, -0.8];
+        // One size for every card, so the pile shows clean edges rather than text peeking out.
+        const fit = () => {
+          dealt.forEach((card) => (card.style.minHeight = ""));
+          const tallest = Math.max(...dealt.map((card) => card.offsetHeight));
+          dealt.forEach((card) => (card.style.minHeight = `${tallest}px`));
+          deck.style.height = `${tallest + dealt.length * 12}px`;
+        };
+        fit();
+        gsap.set(dealt, { zIndex: (i) => i + 1, transformOrigin: "50% 100%" });
+        gsap.set(dealt[0], { y: (dealt.length - 1) * 12, rotate: tilt[0] });
+        deal = gsap.timeline({
+          scrollTrigger: {
+            trigger: beliefSection,
+            start: "top top",
+            end: () => `+=${window.innerHeight * 0.75 * dealt.length}`,
+            pin: true,
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+            onRefreshInit: fit,
+          },
         });
-      });
+        dealt.forEach((card, i) => {
+          if (i === 0) return;
+          const at = i - 1;
+          deal!.fromTo(
+            card,
+            { y: () => window.innerHeight, rotate: tilt[i % tilt.length] * 4, x: (i % 2 ? 1 : -1) * 60 },
+            { y: (dealt.length - 1 - i) * 12, rotate: tilt[i % tilt.length], x: 0, duration: 1, ease: "power3.out" },
+            at,
+          );
+          // Everything already on the pile gives way a little.
+          deal!.to(dealt.slice(0, i), { y: "-=12", scale: "-=0.025", duration: 1, ease: "power2.out" }, at);
+        });
+        deal.to({}, { duration: 0.4 });
+      }
 
       // Paragraphs and cards arrive as they enter.
       q("[data-fade-up]").forEach((el) => {
@@ -292,6 +325,13 @@ export function Choreography() {
       );
 
       return () => {
+        if (deck) {
+          delete deck.dataset.live;
+          deck.style.height = "";
+          dealt.forEach((card) => (card.style.minHeight = ""));
+        }
+        deal?.scrollTrigger?.kill();
+        deal?.kill();
         gsap.ticker.remove(scene);
         window.removeEventListener("pointermove", aimAt);
         ["--px", "--py", "--vy", "--lx", "--ly", "--mx", "--my"].forEach((n) => root.style.removeProperty(n));

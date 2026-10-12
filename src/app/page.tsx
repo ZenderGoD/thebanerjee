@@ -460,17 +460,22 @@ export default function Home() {
         <Bridge text={bridges.beliefs} />
 
         {/* VIII. What I believe */}
-        <section id="beliefs" data-chapter="beliefs" className="relative px-5 pb-[24vh] md:px-8 lg:pl-48">
+        <section
+          id="beliefs"
+          data-chapter="beliefs"
+          className="relative flex min-h-[100dvh] flex-col px-5 pt-24 pb-16 md:px-8 lg:pl-48"
+          data-beliefs
+        >
           <h2 className="display text-[clamp(56px,8vw,136px)]" data-split>
             What I <span className="text-red" data-thread>believe.</span>
           </h2>
-          <div className="mt-16 max-w-[1000px]">
-            {beliefs.map((b, i) => (
+          {/* A list without motion; with motion, Choreography turns it into a pile the cards land on. */}
+          <div className="relative mt-12 grid max-w-[1000px] gap-6 data-[live=true]:block" data-deck>
+            {beliefs.map((b) => (
               <article
                 key={b.line}
                 data-belief
-                className="lit sticky mb-[16vh] border-[1.5px] border-ink bg-paper p-7 [--s:8px] md:p-12"
-                style={{ top: `calc(13vh + ${i * 26}px)` }}
+                className="lit border-[1.5px] border-ink bg-paper p-7 [--s:8px] in-data-[live=true]:absolute in-data-[live=true]:inset-x-0 in-data-[live=true]:top-0 md:p-12"
               >
                 <p className="display text-[clamp(40px,5.6vw,96px)]">{b.line}</p>
                 <p className="mt-6 max-w-[50ch] text-[18px] leading-[1.55] text-ink-soft md:text-[20px]">{b.why}</p>
