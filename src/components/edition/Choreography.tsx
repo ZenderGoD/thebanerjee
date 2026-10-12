@@ -39,7 +39,7 @@ export function Choreography() {
       intro
         .from("[data-rise]", { yPercent: 105, duration: 1.3, stagger: 0.12 })
         .from("[data-sun]", { scale: 0, duration: 1.6, ease: "elastic.out(1, 0.75)" }, 0.25)
-        .from("[data-hero-plate] img", { opacity: 0, y: 40, duration: 1.4 }, 0.15)
+        .from("[data-hero-plate] [data-plate]", { opacity: 0, y: 40, duration: 1.4 }, 0.15)
         .from("[data-fade]", { opacity: 0, y: 18, duration: 1, stagger: 0.1 }, 0.6);
 
       gsap.to("[data-sun]", {
@@ -48,7 +48,7 @@ export function Choreography() {
         ease: "none",
         scrollTrigger: { trigger: "#prologue", start: "top top", end: "bottom top", scrub: true },
       });
-      gsap.to("[data-hero-plate] img", {
+      gsap.to("[data-hero-plate] [data-plate]", {
         yPercent: -8,
         ease: "none",
         scrollTrigger: { trigger: "#prologue", start: "top top", end: "bottom top", scrub: true },

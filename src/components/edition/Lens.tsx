@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image, { type StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
+import { DepthPlate } from "./DepthPlate";
 import { gsap } from "gsap";
 
 const SIZE = 220;
@@ -9,7 +10,19 @@ const ZOOM = 2.6;
 
 // A magnifying glass over an engraving: it follows a fine pointer and shows the plate up close.
 // Touch screens and reduced motion get the plate alone.
-export function Lens({ src, alt, className, depth }: { src: StaticImageData; alt: string; className?: string; depth?: number }) {
+export function Lens({
+  src,
+  depthMap,
+  alt,
+  className,
+  depth,
+}: {
+  src: StaticImageData;
+  depthMap: string;
+  alt: string;
+  className?: string;
+  depth?: number;
+}) {
   const wrap = useRef<HTMLDivElement>(null);
   const glass = useRef<HTMLDivElement>(null);
 
@@ -46,7 +59,7 @@ export function Lens({ src, alt, className, depth }: { src: StaticImageData; alt
 
   return (
     <div ref={wrap} className={`relative bg-paper ${className ?? ""}`} data-flea data-depth={depth}>
-      <Image src={src} alt={alt} sizes="(min-width: 768px) 46vw, 100vw" className="ink h-auto w-full" />
+      <DepthPlate src={src} depth={depthMap} alt={alt} sizes="(min-width: 768px) 46vw, 100vw" strength={0.08} />
       <div
         ref={glass}
         aria-hidden

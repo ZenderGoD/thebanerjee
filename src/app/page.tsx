@@ -4,6 +4,7 @@ import { Choreography } from "@/components/edition/Choreography";
 import { VoiceIsland } from "@/components/edition/VoiceIsland";
 import { Caption } from "@/components/edition/Caption";
 import { Lens } from "@/components/edition/Lens";
+import { DepthPlate } from "@/components/edition/DepthPlate";
 import {
   chapters,
   credits,
@@ -101,12 +102,16 @@ export default function Home() {
               data-depth="64"
               aria-hidden
             />
-            <Image
+            <DepthPlate
               src={melencolia}
+              depth="/art/melencolia-depth.webp"
               alt="Albrecht Dürer's engraving Melencolia I: a winged figure sits among a maker's tools, lost in thought."
               priority
               sizes="(min-width: 768px) 42vw, 100vw"
-              className="ink relative h-auto w-full md:h-[86dvh] md:w-auto md:max-w-none md:object-contain"
+              strength={0.075}
+              className="w-full md:h-[86dvh] md:w-fit"
+              imgClassName="h-auto w-full md:h-full md:w-auto md:max-w-none"
+              data-plate
             />
           </div>
         </section>
@@ -120,11 +125,13 @@ export default function Home() {
               <span className="text-red">first.</span>
             </h2>
             <div className="relative mt-8 md:absolute md:inset-y-0 md:right-0 md:mt-0 md:flex md:w-[62%] md:items-center">
-              <Image
+              <DepthPlate
                 src={flight}
+                depth="/art/flight-depth.webp"
                 alt="Leonardo da Vinci's drawing of a flying machine with a wing frame and pulleys."
                 sizes="(min-width: 768px) 62vw, 100vw"
-                className="ink h-auto w-full"
+                strength={0.09}
+                className="w-full"
                 data-draw
                 data-depth="26"
               />
@@ -156,11 +163,13 @@ export default function Home() {
             </h2>
             <div className="relative md:col-span-4" data-float>
               <div className="absolute -top-4 -left-4 h-full w-full bg-red" data-depth="44" aria-hidden />
-              <Image
+              <DepthPlate
                 src={tailor}
+                depth="/art/tailor-depth.webp"
                 alt="Jost Amman's 1568 woodcut of a tailor's workshop, with garments hanging from a rail."
                 sizes="(min-width: 768px) 30vw, 90vw"
-                className="relative h-auto w-full border-[1.5px] border-ink bg-paper grayscale"
+                strength={0.07}
+                className="w-full overflow-hidden border-[1.5px] border-ink bg-paper"
                 data-depth="16"
               />
             </div>
@@ -188,11 +197,16 @@ export default function Home() {
           className="relative grid border-t-[1.5px] border-ink md:grid-cols-2"
         >
           <div className="relative md:sticky md:top-0 md:h-[100dvh] md:overflow-hidden" data-jerome>
-            <Image
+            <DepthPlate
               src={jerome}
+              depth="/art/jerome-depth.webp"
               alt="Albrecht Dürer's engraving of Saint Jerome working at his desk in a quiet, sunlit study."
               sizes="(min-width: 768px) 50vw, 100vw"
-              className="ink h-auto w-full md:h-full md:object-cover md:object-top"
+              strength={0.08}
+              fit="cover"
+              position="top"
+              className="w-full md:h-full"
+              imgClassName="h-auto w-full md:h-full md:object-cover md:object-top"
               data-jerome-img
               data-depth="14"
             />
@@ -222,11 +236,13 @@ export default function Home() {
           className="relative overflow-hidden border-t-[1.5px] border-ink"
         >
           <div className="relative flex min-h-[100dvh] flex-col justify-center px-5 pt-28 pb-16 md:px-8 lg:pl-48">
-            <Image
+            <DepthPlate
               src={tube}
+              depth="/art/tube-depth.webp"
               alt="Athanasius Kircher's 1673 engraving of speaking tubes carrying voices from a courtyard into the rooms of a house."
               sizes="(min-width: 768px) 46vw, 100vw"
-              className="ink pointer-events-none mb-10 h-auto w-full md:absolute md:top-20 md:right-0 md:mb-0 md:w-[46%]"
+              strength={0.08}
+              className="pointer-events-none mb-10 w-full md:absolute md:top-20 md:right-0 md:mb-0 md:w-[46%]"
               data-tube
               data-depth="22"
             />
@@ -291,6 +307,7 @@ export default function Home() {
             </h2>
             <Lens
               depth={24}
+              depthMap="/art/flea-depth.webp"
               src={flea}
               alt="Robert Hooke's 1665 engraving of a flea seen through a microscope."
               className="mt-8 w-full md:absolute md:top-[10px] md:right-[-4%] md:mt-0 md:w-[46%]"
@@ -426,11 +443,15 @@ export default function Home() {
           data-epilogue
         >
           <div className="absolute inset-0" data-peek>
-            <Image
+            <DepthPlate
               src={flammarion}
+              depth="/art/flammarion-depth.webp"
               alt="The Flammarion engraving: a traveller kneels at the edge of the sky and pushes his head through to see the workings beyond."
               sizes="100vw"
-              className="ink h-full w-full scale-[1.06] object-cover"
+              strength={0.07}
+              fit="cover"
+              className="h-full w-full scale-[1.06]"
+              imgClassName="h-full w-full object-cover"
               data-depth="18"
             />
           </div>
