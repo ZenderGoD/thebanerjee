@@ -1,504 +1,350 @@
-import Link from "next/link";
-import { ArrowRight, ArrowUpRight, MoveRight } from "lucide-react";
+import Image from "next/image";
+import { ArrowUpRight, ArrowDown } from "@phosphor-icons/react/dist/ssr";
+import { Choreography } from "@/components/edition/Choreography";
+import { VoiceIsland } from "@/components/edition/VoiceIsland";
+import { Caption } from "@/components/edition/Caption";
 import {
-  contactCards,
-  currentFocus,
-  experience,
-  heroBadges,
-  highlights,
-  principles,
+  chapters,
+  credits,
+  education,
+  labWorks,
   profile,
-  projects,
-  socialLinks,
-  stats,
-  toolbox,
-} from "@/lib/portfolioData";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { DesignLayerToggle } from "@/components/DesignLayerToggle";
-import { FadeIn } from "@/components/motion/FadeIn";
-import { StaggerChildren, StaggerItem } from "@/components/motion/StaggerChildren";
-import { AnimatedCounter } from "@/components/motion/AnimatedCounter";
-import { HomeRouter } from "@/components/HomeRouter";
-
-const toneClass: Record<string, string> = {
-  paper: "tone-paper",
-  yellow: "tone-yellow",
-  mint: "tone-mint",
-  blue: "tone-blue",
-  pink: "tone-pink",
-};
-
-const statTone = ["tone-yellow", "tone-paper", "tone-mint", "tone-paper"];
+  rareFacts,
+  rocketCaptions,
+  wisperModes,
+} from "@/lib/edition";
+import melencolia from "../../public/art/melencolia.webp";
+import flight from "../../public/art/flight.webp";
+import tailor from "../../public/art/tailor.webp";
+import jerome from "../../public/art/jerome.webp";
+import tube from "../../public/art/tube.webp";
+import flea from "../../public/art/flea.webp";
+import flammarion from "../../public/art/flammarion.webp";
 
 export default function Home() {
   return (
-    <HomeRouter>
-    <div className="relative overflow-x-clip pb-16 text-foreground">
-      {/* Decorative floating shapes */}
-      <div className="pointer-events-none absolute -left-8 top-36 hidden h-24 w-24 rotate-[-8deg] rounded-[2rem] border border-[var(--outline)] bg-[var(--paper-strong)] opacity-90 shadow-[var(--neo-shadow-tight)] xl:block" />
-      <div className="pointer-events-none absolute right-8 top-20 hidden h-[5.5rem] w-[5.5rem] rotate-[8deg] rounded-[1.75rem] border border-[var(--outline)] bg-[var(--accent-pink)] opacity-90 shadow-[var(--neo-shadow-tight)] xl:block" />
-      <div className="pointer-events-none absolute bottom-16 right-4 hidden h-28 w-28 rounded-full border border-[rgba(77,130,255,0.24)] bg-[rgba(77,130,255,0.08)] shadow-[var(--neo-shadow-tight)] lg:block" />
+    <>
+      <Choreography />
 
-      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-        {/* ─── Header ─── */}
-        <FadeIn>
-          <header className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="portfolio-punch max-w-max px-5 py-3">
-              <p className="mono-font text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                Portfolio / Bishal Banerjee / 2026
+      <header className="fixed inset-x-0 top-0 z-40 flex h-16 items-center justify-between px-5 mix-blend-difference text-paper md:px-8">
+        <a href="#prologue" className="display text-[22px] tracking-normal">
+          Bishal Banerjee
+        </a>
+        <a href={`mailto:${profile.email}`} className="btn btn-line h-10 text-[12px]">
+          Write to me
+        </a>
+      </header>
+
+      <nav
+        aria-label="Chapters"
+        className="fixed bottom-6 left-8 z-30 hidden mix-blend-difference text-paper lg:block"
+      >
+        <ol className="grid gap-[3px] font-mono text-[11px] uppercase tracking-[0.04em]">
+          {chapters.map((c) => (
+            <li key={c.id}>
+              <a
+                href={`#${c.id}`}
+                data-index-link={c.id}
+                className="grid grid-cols-[34px_1fr] opacity-45 transition-opacity duration-300 hover:opacity-100 data-[active=true]:opacity-100"
+              >
+                <span>{c.numeral}</span>
+                <span>{c.label}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
+      <main>
+        {/* I. Prologue */}
+        <section
+          id="prologue"
+          data-chapter="prologue"
+          className="relative grid min-h-[100dvh] grid-cols-1 overflow-hidden px-5 pt-24 pb-10 md:grid-cols-12 md:px-8 md:pt-20"
+        >
+          <div className="relative z-10 flex flex-col justify-end md:col-span-7 md:pb-8 lg:pl-40">
+            <h1 className="display text-[clamp(72px,9.6vw,172px)]" data-hero-title>
+              <span className="block overflow-hidden pb-[0.04em]">
+                <span className="block" data-rise>
+                  Bishal
+                </span>
+              </span>
+              <span className="block overflow-hidden pb-[0.04em]">
+                <span className="block text-red" data-rise>
+                  Banerjee
+                </span>
+              </span>
+            </h1>
+            <p className="mt-6 max-w-[34ch] text-[19px] leading-[1.45] text-ink-soft md:text-[21px]" data-fade>
+              I build software people talk to. Founding engineer at IMAI, and the maker of Wisper
+              Back.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3" data-fade>
+              <a href={`mailto:${profile.email}`} className="btn btn-solid">
+                Write to me
+              </a>
+              <a href="#rocket" className="btn btn-line">
+                Read the story <ArrowDown size={15} weight="bold" />
+              </a>
+            </div>
+          </div>
+
+          <div className="relative mt-10 md:col-span-5 md:mt-0" data-hero-plate>
+            <div
+              className="absolute top-[9%] left-[30%] aspect-square w-[46%] rounded-full bg-red"
+              data-sun
+              aria-hidden
+            />
+            <Image
+              src={melencolia}
+              alt="Albrecht Dürer's engraving Melencolia I: a winged figure sits among a maker's tools, lost in thought."
+              priority
+              sizes="(min-width: 768px) 42vw, 100vw"
+              className="ink relative h-auto w-full md:h-[86dvh] md:w-auto md:max-w-none md:object-contain"
+            />
+          </div>
+        </section>
+
+        {/* II. The rocket */}
+        <section id="rocket" data-chapter="rocket" className="relative" data-rocket>
+          <div className="relative flex min-h-[100dvh] bg-paper flex-col justify-center overflow-hidden px-5 py-24 md:px-8 lg:pl-48">
+            <h2 className="display relative z-10 text-[clamp(56px,9vw,150px)]">
+              Mechatronics
+              <br />
+              <span className="text-red">first.</span>
+            </h2>
+            <div className="relative mt-8 md:absolute md:inset-y-0 md:right-0 md:mt-0 md:flex md:w-[62%] md:items-center">
+              <Image
+                src={flight}
+                alt="Leonardo da Vinci's drawing of a flying machine with a wing frame and pulleys."
+                sizes="(min-width: 768px) 62vw, 100vw"
+                className="ink h-auto w-full"
+                data-draw
+              />
+            </div>
+            <ol className="relative z-10 mt-10 grid max-w-[460px] gap-4 md:mt-12">
+              {rocketCaptions.map((c, i) => (
+                <li key={i} data-caption style={{ marginLeft: `${i * 22}px` }}>
+                  <Caption text={c.text} />
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* III. The allocation */}
+        <section
+          id="rare"
+          data-chapter="rare"
+          className="relative overflow-hidden border-t-[1.5px] border-ink px-5 py-24 md:px-8 md:py-32 lg:pl-48"
+        >
+          <p className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted">
+            The House of Rare, 2024
+          </p>
+          <div className="mt-6 grid items-end gap-10 md:grid-cols-12">
+            <h2 className="display text-[clamp(52px,8.4vw,140px)] md:col-span-8" data-split>
+              Which shirt goes to <span className="text-red">which store.</span>
+            </h2>
+            <div className="relative md:col-span-4" data-float>
+              <div className="absolute -top-4 -left-4 h-full w-full bg-red" aria-hidden />
+              <Image
+                src={tailor}
+                alt="Jost Amman's 1568 woodcut of a tailor's workshop, with garments hanging from a rail."
+                sizes="(min-width: 768px) 30vw, 90vw"
+                className="relative h-auto w-full border-[1.5px] border-ink bg-paper grayscale"
+              />
+            </div>
+          </div>
+          <p className="mt-12 max-w-[60ch] text-[19px] leading-[1.55] text-ink-soft">
+            At the company behind Rare Rabbit, Rareism and RAREZ, I built the assortment and
+            allocation model: which garments go to which store, and how many of each. I got in by
+            messaging their head of technology, started as an intern, and shipped the first version
+            to production.
+          </p>
+          <dl className="mt-14 grid gap-10 sm:grid-cols-[auto_auto] sm:justify-start sm:gap-20">
+            {rareFacts.map((f) => (
+              <div key={f.value} data-fade-up>
+                <dt className="display wide text-[clamp(64px,7vw,112px)] text-red">{f.value}</dt>
+                <dd className="mt-2 max-w-[28ch] text-[16px] leading-snug text-ink-soft">{f.label}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        {/* IV. The studio */}
+        <section
+          id="imai"
+          data-chapter="imai"
+          className="relative grid border-t-[1.5px] border-ink md:grid-cols-2"
+        >
+          <div className="relative md:sticky md:top-0 md:h-[100dvh] md:overflow-hidden" data-jerome>
+            <Image
+              src={jerome}
+              alt="Albrecht Dürer's engraving of Saint Jerome working at his desk in a quiet, sunlit study."
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="ink h-auto w-full md:h-full md:object-cover md:object-top"
+              data-jerome-img
+            />
+          </div>
+          <div className="flex flex-col justify-center gap-10 px-5 py-24 md:min-h-[150dvh] md:px-12 lg:px-16">
+            <h2 className="display text-[clamp(52px,6.6vw,112px)]">
+              The quiet room where it gets <span className="text-red">built.</span>
+            </h2>
+            <p className="max-w-[46ch] text-[19px] leading-[1.55] text-ink-soft" data-fade-up>
+              Since 2025 I&apos;ve been the founding engineer at IMAI, which helps brands design, market
+              and manufacture products with AI. I build the backend, along with much of the product that sits on it.
+            </p>
+            <p className="max-w-[46ch] text-[19px] leading-[1.55] text-ink-soft" data-fade-up>
+              IMAI is also where Wisper Back began. I wanted its long conversations summarised and
+              read aloud, and realised the engine was a product of its own.
+            </p>
+            <a href={profile.imai} target="_blank" rel="noreferrer" className="btn btn-line self-start">
+              Visit IMAI <ArrowUpRight size={15} weight="bold" />
+            </a>
+          </div>
+        </section>
+
+        {/* V. The voice: the one night chapter */}
+        <section
+          id="wisper"
+          data-chapter="wisper"
+          className="on-night relative overflow-hidden bg-night text-paper"
+          data-night
+        >
+          <div className="relative flex min-h-[100dvh] flex-col justify-center px-5 pt-28 pb-20 md:px-8 lg:pl-48">
+            <Image
+              src={tube}
+              alt="Athanasius Kircher's 1673 engraving of speaking tubes carrying voices from a courtyard into the rooms of a house."
+              sizes="100vw"
+              className="ink-night pointer-events-none absolute top-0 right-0 h-auto w-full opacity-30 [mask-image:linear-gradient(to_left,black_35%,transparent_85%)] md:w-[68%]"
+              data-tube
+            />
+            <div className="relative">
+              <h2 className="display text-[clamp(64px,11vw,190px)]" data-split>
+                Wisper <span className="text-red">Back</span>
+              </h2>
+              <p className="mt-6 max-w-[40ch] text-[19px] leading-[1.5] text-paper/75 md:text-[21px]">
+                A Mac app I design, build and ship on my own. Hold a key and talk: it writes for
+                you, reads to you, and answers back.
               </p>
             </div>
-
-            <div className="flex flex-wrap items-center gap-3">
-              {socialLinks.map((link) => {
-                const Icon = link.icon;
-                return (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target={link.external ? "_blank" : undefined}
-                    rel={link.external ? "noopener noreferrer" : undefined}
-                    className="portfolio-btn-neo text-[13px] font-medium text-foreground"
-                  >
-                    <Icon className="h-4 w-4" />
-                    <span>{link.label}</span>
-                  </a>
-                );
-              })}
-              <DesignLayerToggle />
-              <ThemeToggle />
+            <div className="relative mt-14">
+              <VoiceIsland />
             </div>
-          </header>
-        </FadeIn>
+          </div>
 
-        <main className="space-y-8">
-          {/* ─── Hero + Sidebar ─── */}
-          <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-            <FadeIn delay={0.1}>
-              <article className="portfolio-sheet p-6 sm:p-8 lg:p-10">
-                <div className="flex flex-col gap-5">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <span className="portfolio-spec-label">Foundations</span>
-                    <div className="portfolio-inset hidden items-center gap-3 px-4 py-3 sm:flex">
-                      <span className="mono-font text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                        Focus ring
-                      </span>
-                      <div className="h-1.5 w-[4.5rem] rounded-full bg-[var(--outline)]">
-                        <div className="ml-auto h-1.5 w-6 rounded-full bg-[var(--accent-blue)]" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="portfolio-spec-rule" />
-                  <div className="portfolio-brutal-rule" />
-                </div>
-
-                <StaggerChildren stagger={0.06} delay={0.2} className="mt-6 flex flex-wrap items-center gap-3">
-                  {heroBadges.map((badge, index) => {
-                    const Icon = badge.icon;
-                    return (
-                      <StaggerItem
-                        key={badge.label}
-                        className={
-                          index === 0
-                            ? "portfolio-annotation"
-                            : "portfolio-control portfolio-control-pill px-3.5 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-foreground"
-                        }
-                      >
-                        <Icon className="h-3.5 w-3.5" />
-                        {badge.label}
-                      </StaggerItem>
-                    );
-                  })}
-                </StaggerChildren>
-
-                <FadeIn delay={0.3} y={16} className="mt-8 space-y-5">
-                  <p className="mono-font text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                    {profile.currentRole}
-                  </p>
-                  <h1 className="display-font display-font-lg max-w-4xl text-4xl leading-[0.92] sm:text-5xl md:text-6xl xl:text-7xl">
-                    Loud interfaces. Clean systems. AI-powered products that actually ship.
-                  </h1>
-                  <p className="max-w-3xl text-base leading-relaxed text-foreground/70 sm:text-lg sm:leading-relaxed">
-                    I build web experiences with a product engineer&apos;s discipline: strong
-                    architecture, reliable delivery, and interface choices that feel deliberate
-                    instead of generic.
-                  </p>
-                </FadeIn>
-
-                <StaggerChildren stagger={0.08} delay={0.4} className="mt-8 flex flex-wrap gap-4">
-                  <StaggerItem>
-                    <a
-                      href="mailto:bishal@bebishal.com?subject=Let%27s%20build%20something"
-                      className="portfolio-btn-brutal text-[13px] font-semibold"
-                    >
-                      Let&apos;s build together
-                      <ArrowUpRight className="h-4 w-4" />
-                    </a>
-                  </StaggerItem>
-                  <StaggerItem>
-                    <Link
-                      href="/help"
-                      className="portfolio-btn-neo text-[13px] font-medium text-foreground"
-                    >
-                      Full dossier
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </StaggerItem>
-                  <StaggerItem>
-                    <a
-                      href="https://github.com/ZenderGoD"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="portfolio-btn-neo text-[13px] font-medium text-foreground"
-                    >
-                      View GitHub
-                      <MoveRight className="h-4 w-4" />
-                    </a>
-                  </StaggerItem>
-                </StaggerChildren>
-
-                <StaggerChildren stagger={0.1} delay={0.15} className="mt-8 grid gap-4 md:grid-cols-3">
-                  {currentFocus.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <StaggerItem key={item.label} className="portfolio-inset p-5">
-                        <div className="flex items-center justify-between gap-3">
-                          <div className="flex items-center gap-3">
-                            <div className="portfolio-icon-box">
-                              <Icon className="h-4 w-4" />
-                            </div>
-                            <p className="mono-font text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                              {item.label}
-                            </p>
-                          </div>
-                          <span className="portfolio-annotation">active</span>
-                        </div>
-                        <p className="mt-4 text-[13px] leading-relaxed text-foreground/80">
-                          {item.value}
-                        </p>
-                      </StaggerItem>
-                    );
-                  })}
-                </StaggerChildren>
-              </article>
-            </FadeIn>
-
-            <div className="grid gap-6">
-              <FadeIn delay={0.2}>
-                <aside className="portfolio-neo p-6 sm:p-7">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <span className="portfolio-spec-label">System status</span>
-                      <h2 className="display-font mt-4 text-2xl leading-snug sm:text-3xl">
-                        Product engineering with backend weight and visual taste.
-                      </h2>
-                    </div>
-                    <div className="portfolio-annotation hidden sm:inline-flex">Open to work</div>
-                  </div>
-
-                  <div className="portfolio-inset mt-6 p-5">
-                    <p className="text-[13px] leading-relaxed text-muted-foreground">{profile.availability}</p>
-                    <div className="mt-4 grid gap-3 text-[13px] text-foreground">
-                      <div className="portfolio-control flex items-center justify-between gap-3 px-4 py-3">
-                        <span className="mono-font shrink-0 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                          Base
-                        </span>
-                        <span className="truncate text-right font-medium">{profile.location}</span>
-                      </div>
-                      <div className="portfolio-control flex items-center justify-between gap-3 px-4 py-3">
-                        <span className="mono-font shrink-0 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                          Focus
-                        </span>
-                        <span className="truncate text-right font-medium">AI products, systems, and full-stack delivery</span>
-                      </div>
-                      <div className="portfolio-control flex items-center justify-between gap-3 px-4 py-3">
-                        <span className="mono-font shrink-0 text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                          Style
-                        </span>
-                        <span className="truncate text-right font-medium">Bold UI direction and pragmatic engineering</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 grid grid-cols-3 gap-3">
-                    <div className="portfolio-control portfolio-control-pill justify-center px-4 py-3">
-                      <p className="mono-font text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                        Raised
-                      </p>
-                    </div>
-                    <div className="portfolio-inset px-4 py-3 text-center">
-                      <p className="mono-font text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                        Inset
-                      </p>
-                    </div>
-                    <div className="portfolio-control portfolio-control-pill justify-center px-4 py-3">
-                      <p className="mono-font text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                        Focused
-                      </p>
-                    </div>
-                  </div>
-                </aside>
-              </FadeIn>
-
-              <StaggerChildren stagger={0.1} delay={0.1} className="grid gap-4 sm:grid-cols-3 xl:grid-cols-1">
-                {highlights.map((item, index) => (
-                  <StaggerItem
-                    key={item.title}
-                    className={`portfolio-brutal p-5 ${toneClass[item.tone] ?? "tone-paper"}`}
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="portfolio-spec-label">Mode 0{index + 1}</span>
-                      <div
-                        className={`h-3 w-3 rounded-full ${
-                          item.tone === "yellow"
-                            ? "bg-[var(--accent-orange)]"
-                            : item.tone === "mint"
-                              ? "bg-[rgba(95,142,112,0.68)]"
-                              : "bg-[var(--accent-blue)]"
-                        }`}
-                      />
-                    </div>
-                    <h3 className="display-font mt-4 text-xl leading-snug sm:text-2xl">{item.title}</h3>
-                    <p className="mt-2 text-[13px] leading-relaxed text-foreground/75">
-                      {item.description}
-                    </p>
-                  </StaggerItem>
-                ))}
-              </StaggerChildren>
-            </div>
-          </section>
-
-          {/* ─── Stats ─── */}
-          <StaggerChildren stagger={0.08} className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {stats.map((item, index) => (
-              <StaggerItem
-                key={item.label}
-                className={`portfolio-brutal p-5 ${statTone[index] ?? "tone-paper"}`}
-              >
-                <span className="portfolio-spec-label">Level 0{index + 1}</span>
-                <AnimatedCounter
-                  value={item.value}
-                  className="display-font display-font-lg mt-5 block text-4xl leading-none sm:text-5xl"
-                />
-                <p className="mt-3 text-[11px] font-medium uppercase tracking-[0.1em] text-foreground/80">
-                  {item.label}
-                </p>
-                <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{item.note}</p>
-              </StaggerItem>
-            ))}
-          </StaggerChildren>
-
-          {/* ─── Projects + Principles ─── */}
-          <section className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-            <FadeIn>
-              <article className="portfolio-sheet p-6 sm:p-8">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="relative" data-pan>
+            <div className="flex w-max gap-0 bg-night pl-5 md:h-[100dvh] md:items-center md:pl-8 lg:pl-48" data-pan-track>
+              {wisperModes.map((m) => (
+                <article
+                  key={m.name}
+                  className="flex w-[86vw] flex-col justify-between border-l-[1.5px] border-paper/20 px-6 py-12 md:h-[64dvh] md:w-[38vw] md:px-10"
+                >
+                  <span className="h-3 w-3 bg-red" aria-hidden />
                   <div>
-                    <span className="portfolio-spec-label">Data display</span>
-                    <h2 className="display-font mt-4 text-3xl leading-snug sm:text-4xl">
-                      Projects that mix product thinking with serious technical depth.
-                    </h2>
+                    <h3 className="display text-[clamp(44px,5vw,84px)]">{m.name}</h3>
+                    <p className="mt-4 max-w-[30ch] text-[18px] leading-[1.5] text-paper/70">{m.line}</p>
                   </div>
-                  <Link href="/help" className="text-[13px] font-medium underline decoration-1 underline-offset-4 opacity-70 hover:opacity-100">
-                    See the full profile
-                  </Link>
-                </div>
-
-                <StaggerChildren stagger={0.1} delay={0.15} className="mt-6 grid gap-4 md:grid-cols-2">
-                  {projects.map((project, index) => {
-                    const Icon = project.icon;
-                    const cardClass =
-                      index % 2 === 0
-                        ? "portfolio-brutal"
-                        : "portfolio-neo";
-
-                    return (
-                      <StaggerItem
-                        key={project.title}
-                        className={`${cardClass} p-5 ${toneClass[project.tone] ?? "tone-paper"}`}
-                      >
-                        <div className="flex items-center justify-between gap-4">
-                          <span className="portfolio-spec-label">{project.tag}</span>
-                          <div className="portfolio-icon-box">
-                            <Icon className="h-4 w-4" />
-                          </div>
-                        </div>
-                        <h3 className="display-font mt-4 text-xl leading-snug sm:text-2xl">{project.title}</h3>
-                        <p className="mt-2 text-[13px] leading-relaxed text-foreground/75">
-                          {project.summary}
-                        </p>
-                        <p className="mt-3 text-[12px] font-medium text-muted-foreground">
-                          {project.result}
-                        </p>
-                      </StaggerItem>
-                    );
-                  })}
-                </StaggerChildren>
-              </article>
-            </FadeIn>
-
-            <FadeIn delay={0.15}>
-              <article className="portfolio-neo p-6 sm:p-8">
-                <span className="portfolio-spec-label">Controls</span>
-                <h2 className="display-font mt-4 text-3xl leading-snug sm:text-4xl">
-                  The way I like to work is loud on taste and strict on execution.
-                </h2>
-
-                <div className="portfolio-inset mt-6 p-5">
-                  <ul className="space-y-3.5 text-[13px] leading-relaxed text-foreground/80">
-                    {principles.map((item) => (
-                      <li key={item} className="flex gap-3">
-                        <span className="portfolio-bullet" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="mt-6">
-                  <span className="portfolio-spec-label">Toolbox</span>
-                  <StaggerChildren stagger={0.03} delay={0.1} className="mt-4 flex flex-wrap gap-2.5">
-                    {toolbox.map((item) => (
-                      <StaggerItem
-                        key={item}
-                        className="portfolio-btn-neo portfolio-btn-neo-sm font-medium text-foreground/85"
-                      >
-                        {item}
-                      </StaggerItem>
-                    ))}
-                  </StaggerChildren>
-                </div>
-              </article>
-            </FadeIn>
-          </section>
-
-          {/* ─── Experience + CTA ─── */}
-          <section className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-            <FadeIn>
-              <article className="portfolio-brutal bg-[var(--paper-strong)] p-6 sm:p-8">
-                <span className="portfolio-spec-label">Timeline</span>
-                <h2 className="display-font mt-4 text-3xl leading-snug sm:text-4xl">
-                  Built across AI platforms, data products, and production delivery.
-                </h2>
-
-                <div className="mt-6 space-y-4">
-                  {experience.map((item) => (
-                    <article key={item.company} className="portfolio-inset p-5">
-                      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                        <div>
-                          <p className="display-font text-xl leading-snug sm:text-2xl">{item.company}</p>
-                          <p className="mt-1 text-[13px] font-medium text-foreground/80">
-                            {item.role}
-                          </p>
-                        </div>
-                        <p className="mono-font text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                          {item.period}
-                        </p>
-                      </div>
-                      <ul className="mt-4 space-y-2.5 text-[13px] leading-relaxed text-foreground/80">
-                        {item.bullets.map((bullet) => (
-                          <li key={bullet} className="flex gap-3">
-                            <span className="portfolio-bullet" />
-                            <span>{bullet}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </article>
-                  ))}
-                </div>
-              </article>
-            </FadeIn>
-
-            <div className="grid gap-6">
-              <FadeIn delay={0.1}>
-                <section className="portfolio-brutal tone-yellow p-6 sm:p-8">
-                  <span className="portfolio-spec-label">Feedback</span>
-                  <h2 className="display-font mt-4 text-3xl leading-snug sm:text-4xl">
-                    Ready to build something that feels sharp, fast, and memorable?
-                  </h2>
-                  <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-foreground/75">
-                    If the work needs backend rigor, product sense, and a frontend that does not look like
-                    everyone else&apos;s, I&apos;m interested.
-                  </p>
-
-                  <div className="mt-6 flex flex-wrap gap-4">
-                    <a href={`mailto:${profile.email}`} className="portfolio-btn-brutal text-[13px] font-semibold">
-                      Say hello
-                      <ArrowUpRight className="h-4 w-4" />
-                    </a>
-                    <a
-                      href="https://www.linkedin.com/in/bishal-banerjee-4742a8190/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="portfolio-btn-neo text-[13px] font-medium"
-                    >
-                      Connect on LinkedIn
-                      <MoveRight className="h-4 w-4" />
-                    </a>
-                  </div>
-                </section>
-              </FadeIn>
-
-              <FadeIn delay={0.2}>
-                <section id="contact" className="portfolio-neo p-6 sm:p-8">
-                  <span className="portfolio-spec-label">Contact details</span>
-                  <StaggerChildren stagger={0.08} delay={0.1} className="mt-5 grid gap-4 sm:grid-cols-2">
-                    {contactCards.map((card) => {
-                      const Icon = card.icon;
-                      const isDisabled = card.href === "#";
-
-                      return isDisabled ? (
-                        <StaggerItem key={card.label} className="portfolio-inset p-5">
-                          <div className="flex items-center gap-3">
-                            <div className="portfolio-icon-box">
-                              <Icon className="h-4 w-4" />
-                            </div>
-                            <div>
-                              <p className="mono-font text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                                {card.label}
-                              </p>
-                              <p className="mt-1.5 text-[13px] font-medium text-foreground">
-                                {card.value}
-                              </p>
-                            </div>
-                          </div>
-                        </StaggerItem>
-                      ) : (
-                        <StaggerItem key={card.label}>
-                          <a href={card.href} className="portfolio-inset block p-5">
-                            <div className="flex items-center gap-3">
-                              <div className="portfolio-icon-box">
-                                <Icon className="h-4 w-4" />
-                              </div>
-                              <div>
-                                <p className="mono-font text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                                  {card.label}
-                                </p>
-                                <p className="mt-1.5 text-[13px] font-medium text-foreground">
-                                  {card.value}
-                                </p>
-                              </div>
-                            </div>
-                          </a>
-                        </StaggerItem>
-                      );
-                    })}
-                  </StaggerChildren>
-                </section>
-              </FadeIn>
+                </article>
+              ))}
+              <div className="flex w-[86vw] flex-col justify-center gap-6 border-l-[1.5px] border-paper/20 px-6 py-12 md:h-[64dvh] md:w-[38vw] md:px-10">
+                <p className="max-w-[24ch] text-[22px] leading-[1.4] text-paper/85">
+                  Signed, notarised and updated on its own, on every Mac with Apple silicon.
+                </p>
+                <a href={profile.wisperBack} target="_blank" rel="noreferrer" className="btn btn-line self-start">
+                  Get Wisper Back <ArrowUpRight size={15} weight="bold" />
+                </a>
+              </div>
             </div>
-          </section>
-        </main>
+          </div>
+        </section>
 
-        <FadeIn>
-          <footer className="portfolio-brutal mt-2 bg-[var(--paper-strong)] px-6 py-5 text-[13px] leading-relaxed text-muted-foreground sm:flex sm:items-center sm:justify-between">
-            <span>Copyright {new Date().getFullYear()} Bishal Banerjee.</span>
-            <span className="mt-1 block sm:mt-0">Neobrutal edges, neoneu depth, and a clear engineering signal.</span>
-          </footer>
-        </FadeIn>
-      </div>
-    </div>
-    </HomeRouter>
+        {/* VI. The lab */}
+        <section id="lab" data-chapter="lab" className="relative px-5 py-24 md:px-8 md:py-32 lg:pl-48">
+          <div className="relative">
+            <h2 className="display relative z-10 max-w-[12ch] text-[clamp(52px,7vw,120px)]">
+              Small things, looked at <span className="text-red">closely.</span>
+            </h2>
+            <Image
+              src={flea}
+              alt="Robert Hooke's 1665 engraving of a flea seen through a microscope."
+              sizes="(min-width: 768px) 55vw, 100vw"
+              className="ink mt-8 h-auto w-full md:absolute md:top-[10px] md:right-[-4%] md:mt-0 md:w-[46%]"
+              data-flea
+            />
+          </div>
+
+          <div className="mt-16 grid gap-[1.5px] border-[1.5px] border-ink bg-ink md:mt-40 md:grid-cols-6">
+            {labWorks.map((w, i) => {
+              const span = ["md:col-span-4", "md:col-span-2", "md:col-span-2", "md:col-span-2", "md:col-span-2"][i];
+              const tone =
+                i === 0 ? "bg-red text-paper" : i === 3 ? "bg-ink text-paper" : "bg-paper text-ink";
+              return (
+                <article key={w.title} className={`${span} ${tone} flex min-h-[240px] flex-col justify-between p-6 md:p-8`} data-fade-up>
+                  <span className="font-mono text-[12px] uppercase tracking-[0.08em] opacity-70">{w.kind}</span>
+                  <div>
+                    <h3 className={`display ${i === 0 ? "text-[clamp(40px,4.4vw,72px)]" : "text-[clamp(32px,2.6vw,44px)]"}`}>
+                      {w.title}
+                    </h3>
+                    <p className="mt-3 max-w-[38ch] text-[16px] leading-[1.5] opacity-80">{w.line}</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          <div className="mt-16 grid gap-6 sm:grid-cols-3">
+            {education.map((e) => (
+              <div key={e.school} className="border-t-[1.5px] border-ink pt-4">
+                <p className="display text-[28px]">{e.school}</p>
+                <p className="mt-1 text-[16px] text-ink-soft">{e.degree}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* VII. Epilogue */}
+        <section
+          id="epilogue"
+          data-chapter="epilogue"
+          className="relative min-h-[100dvh] overflow-hidden border-t-[1.5px] border-ink"
+          data-epilogue
+        >
+          <div className="absolute inset-0" data-peek>
+            <Image
+              src={flammarion}
+              alt="The Flammarion engraving: a traveller kneels at the edge of the sky and pushes his head through to see the workings beyond."
+              sizes="100vw"
+              className="ink h-full w-full object-cover"
+            />
+          </div>
+          <div className="relative z-10 flex min-h-[100dvh] flex-col justify-end px-5 pb-10 md:px-8 lg:pl-48">
+            <div className="max-w-[900px] bg-paper p-6 md:p-10" data-fade-up>
+              <h2 className="display text-[clamp(56px,8vw,132px)]">
+                Let&apos;s build <span className="text-red">something.</span>
+              </h2>
+              <a
+                href={`mailto:${profile.email}`}
+                className="mt-6 inline-block text-[clamp(22px,2.6vw,36px)] font-semibold underline decoration-red decoration-[3px] underline-offset-[6px] hover:text-red"
+              >
+                {profile.email}
+              </a>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a href={profile.github} target="_blank" rel="noreferrer" className="btn btn-line">
+                  GitHub <ArrowUpRight size={15} weight="bold" />
+                </a>
+                <a href={profile.linkedin} target="_blank" rel="noreferrer" className="btn btn-line">
+                  LinkedIn <ArrowUpRight size={15} weight="bold" />
+                </a>
+              </div>
+            </div>
+            <footer className="mt-8 flex flex-col gap-2 bg-paper/90 p-3 font-mono text-[11px] leading-relaxed text-muted md:flex-row md:justify-between">
+              <span>© 2026 Bishal Banerjee</span>
+              <span className="max-w-[90ch]">{credits}</span>
+            </footer>
+          </div>
+        </section>
+      </main>
+    </>
   );
 }

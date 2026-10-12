@@ -1,47 +1,44 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, Space_Grotesk, Syne } from "next/font/google";
+import { Archivo, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  axes: ["wdth"],
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
-  variable: "--font-ibm-plex-mono",
+const jetbrains = JetBrains_Mono({
+  variable: "--font-jetbrains",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-});
-
-const syne = Syne({
-  variable: "--font-syne",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
-  title: "Bishal Banerjee | Portfolio",
+  metadataBase: new URL("https://bebishal.com"),
+  title: "Bishal Banerjee",
   description:
-    "Neobrutalist portfolio for Bishal Banerjee, a full-stack engineer building AI-powered web products.",
+    "Bishal Banerjee builds software people talk to: founding engineer at IMAI, and the maker of Wisper Back, a voice app for the Mac.",
+  openGraph: {
+    title: "Bishal Banerjee",
+    description: "Founding engineer at IMAI. Maker of Wisper Back.",
+    url: "https://bebishal.com",
+    images: ["/art/melencolia.webp"],
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  themeColor: "#e9e9e4",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${spaceGrotesk.variable} ${ibmPlexMono.variable} ${syne.variable} antialiased`}
-      >
-        <ThemeProvider>{children}</ThemeProvider>
+    <html lang="en">
+      <body className={`${archivo.variable} ${jetbrains.variable}`}>
+        {children}
+        <div className="grain" aria-hidden />
       </body>
     </html>
   );
