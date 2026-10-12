@@ -209,3 +209,18 @@ export const beliefs = [
     why: "I'll give the ones who can't a service they can subscribe to. The craft is in making it easy.",
   },
 ];
+
+// Each chapter of the story has its own colours: one combination from Sanzo Wada's Dictionary of
+// Color Combinations (sanzo-wada.dmbk.io), softened slightly for screens. The page eases from one
+// to the next as you scroll.
+export const palettes: Record<string, { paper: string; ink: string; accent: string; wada: string }> = {
+  prologue: { paper: "#e9dcab", ink: "#151412", accent: "#c4471a", wada: "190: Ivory Buff, English Red, Black" },
+  rocket: { paper: "#b9e2da", ink: "#26316f", accent: "#c24a17", wada: "339: Light Glaucous Blue, Violet Blue, English Red" },
+  rare: { paper: "#ebb994", ink: "#0a1033", accent: "#b7163f", wada: "232: Pinkish Cinnamon, Deep Indigo, Carmine" },
+  imai: { paper: "#efeec4", ink: "#1f3540", accent: "#7a4a17", wada: "296: Sulphur Yellow, Slate, Raw Umber" },
+  wisper: { paper: "#e6d9a9", ink: "#0f3d72", accent: "#9c3b10", wada: "343: Ivory Buff, Vandar Poel's Blue, Burnt Sienna" },
+  lab: { paper: "#cdefe1", ink: "#182515", accent: "#a05a12", wada: "268: Nile Blue, Deep Slate Olive, Raw Sienna" },
+  workshop: { paper: "#efe5a2", ink: "#11241e", accent: "#c63a6f", wada: "325: Naples Yellow, Deep Slate Green, Eugenia Red" },
+  beliefs: { paper: "#bfd2ce", ink: "#121414", accent: "#8f1a33", wada: "221: Neutral Gray, Black, Carmine Red" },
+  epilogue: { paper: "#efc184", ink: "#141311", accent: "#1834b0", wada: "344: Cinnamon Buff, Black, Deep Lyons Blue" },
+};

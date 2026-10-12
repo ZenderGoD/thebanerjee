@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import Lenis from "lenis";
+import { palettes } from "@/lib/edition";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -16,6 +17,45 @@ export function Choreography() {
   useEffect(() => {
     const mm = gsap.matchMedia();
 
+    // Each chapter brings its own paper, ink and accent. With motion the page blends from one to
+    // the next across the bridge between them; without, it changes as a chapter arrives.
+    const root = document.documentElement;
+    const setPalette = (id: string) => {
+      const p = palettes[id];
+      if (p) gsap.set(root, { "--paper": p.paper, "--ink": p.ink, "--accent": p.accent });
+    };
+    const paletteChapters = q("[data-chapter]").filter((el) => palettes[el.getAttribute("data-chapter") ?? ""]);
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      paletteChapters.forEach((section, i) => {
+        if (i === 0) return;
+        const from = palettes[paletteChapters[i - 1].getAttribute("data-chapter")!];
+        const to = palettes[section.getAttribute("data-chapter")!];
+        gsap.fromTo(
+          root,
+          { "--paper": from.paper, "--ink": from.ink, "--accent": from.accent },
+          {
+            "--paper": to.paper,
+            "--ink": to.ink,
+            "--accent": to.accent,
+            ease: "none",
+            immediateRender: false,
+            scrollTrigger: { trigger: section, start: "top 115%", end: "top 35%", scrub: true },
+          },
+        );
+      });
+    });
+    mm.add("(prefers-reduced-motion: reduce)", () => {
+      paletteChapters.forEach((section) => {
+        const id = section.getAttribute("data-chapter")!;
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top 55%",
+          end: "bottom 55%",
+          onToggle: ({ isActive }) => isActive && setPalette(id),
+        });
+      });
+    });
+
     mm.add("(prefers-reduced-motion: no-preference)", () => {
       const lenis = new Lenis({ lerp: 0.11 });
       lenis.on("scroll", ScrollTrigger.update);
@@ -26,7 +66,6 @@ export function Choreography() {
       // One scene, one clock. Each frame the pointer, the scroll speed, the lamp and the print
       // register become CSS variables on the page; every [data-depth] element, lit shadow and
       // title reads them, so nothing else needs its own loop.
-      const root = document.documentElement;
       q("[data-depth]").forEach((el) => el.style.setProperty("--d", el.getAttribute("data-depth") ?? "0"));
       const fine = window.matchMedia("(pointer: fine)").matches;
       const aim = { x: 0, y: 0 };
@@ -139,9 +178,9 @@ export function Choreography() {
         const words = gsap.utils.toArray<HTMLElement>("[data-word]", bridge);
         gsap.fromTo(
           words,
-          { color: "rgba(20, 20, 20, 0.13)", y: 10 },
+          { opacity: 0.14, y: 10 },
           {
-            color: (_i, el: HTMLElement) => (el.dataset.red ? "#c33b24" : "#141414"),
+            opacity: 1,
             y: 0,
             stagger: 0.5,
             ease: "none",
@@ -168,7 +207,6 @@ export function Choreography() {
         if (!next) return;
         gsap.to(card, {
           scale: 0.94,
-          filter: "brightness(0.93)",
           transformOrigin: "50% 0%",
           ease: "none",
           scrollTrigger: { trigger: next, start: "top 60%", end: () => `top ${Math.round(window.innerHeight * 0.13 + (i + 1) * 26)}px`, scrub: true },

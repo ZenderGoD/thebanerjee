@@ -1,15 +1,21 @@
 @import "tailwindcss";
 
 /* One print-like system: cool paper, ink, one vermilion. Corners are square everywhere. */
+/* Three colours make every chapter: paper, ink and an accent. They live as variables on the page
+   so the story can move from one chapter's colours to the next (see palettes in lib/edition). */
+:root {
+  --paper: #e9dcab;
+  --ink: #151412;
+  --accent: #c4471a;
+}
+
 @theme inline {
-  --color-paper: #e9e9e4;
-  --color-paper-deep: #dcdcd5;
-  --color-ink: #141414;
-  --color-ink-soft: #3b3b38;
-  --color-muted: #5d5d58;
-  --color-red: #c33b24;
-  --color-night: #101010;
-  --color-night-soft: #1c1c1b;
+  --color-paper: var(--paper);
+  --color-paper-deep: color-mix(in oklab, var(--paper) 90%, var(--ink));
+  --color-ink: var(--ink);
+  --color-ink-soft: color-mix(in oklab, var(--ink) 82%, var(--paper));
+  --color-muted: color-mix(in oklab, var(--ink) 64%, var(--paper));
+  --color-red: var(--accent);
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
@@ -74,12 +80,12 @@ body {
 
 /* Titles print in two plates: ink, with red slightly out of register (and red words with ink). */
 .display {
-  text-shadow: calc(var(--mx, 0) * 1px) calc(var(--my, 0) * 1px) 0 rgb(195 59 36 / 0.34);
+  text-shadow: calc(var(--mx, 0) * 1px) calc(var(--my, 0) * 1px) 0 color-mix(in srgb, var(--accent) 34%, transparent);
 }
 
 .display .text-red,
 .display.text-red {
-  text-shadow: calc(var(--mx, 0) * -1px) calc(var(--my, 0) * -1px) 0 rgb(20 20 20 / 0.22);
+  text-shadow: calc(var(--mx, 0) * -1px) calc(var(--my, 0) * -1px) 0 color-mix(in srgb, var(--ink) 22%, transparent);
 }
 
 /* Engravings sit in the paper like ink, not on it like photos. */
@@ -88,10 +94,6 @@ body {
   filter: grayscale(1) contrast(1.08);
 }
 
-.ink-night {
-  filter: grayscale(1) invert(1) contrast(1.15);
-  mix-blend-mode: screen;
-}
 
 /* The comic caption box from the story sections. */
 .caption {
@@ -151,10 +153,6 @@ body {
   color: var(--color-paper);
 }
 
-.on-night .btn-line:hover {
-  background: var(--color-paper);
-  color: var(--color-night);
-}
 
 :focus-visible {
   outline: 2px solid var(--color-red);

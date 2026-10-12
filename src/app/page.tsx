@@ -408,7 +408,7 @@ export default function Home() {
                     width={1200}
                     height={750}
                     sizes="(min-width: 768px) 40vw, 100vw"
-                    className="h-auto w-full scale-[1.12] grayscale transition-[filter] duration-500 group-hover:grayscale-0"
+                    className="h-auto w-full scale-[1.12] mix-blend-multiply grayscale transition-[filter] duration-500 group-hover:mix-blend-normal group-hover:grayscale-0"
                     data-shift
                   />
                 </a>

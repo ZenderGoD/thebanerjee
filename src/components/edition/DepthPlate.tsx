@@ -41,6 +41,7 @@ uniform vec4 uFit;
 uniform float uZoom;
 uniform float uBleed;
 uniform vec2 uLight;
+uniform vec3 uInk;
 float depthAt(vec2 uv) { return texture2D(uDepth, uv).r; }
 void main() {
   // The canvas reaches past the picture by uBleed on each side, so near parts can travel out of
@@ -70,7 +71,7 @@ void main() {
   // Only ink that is already there gets heavier or lighter, so blank paper stays clean.
   ink = clamp(ink * clamp(1.0 - lit * 2.4, 0.5, 1.7), 0.0, 1.0);
   ink *= inside.x * inside.y;
-  gl_FragColor = vec4(vec3(0.078) * ink, ink);
+  gl_FragColor = vec4(uInk * ink, ink);
 }`;
 
 type Props = {
@@ -146,6 +147,18 @@ export function DepthPlate({
     const uFit = u("uFit");
     const uZoom = u("uZoom");
     const uLight = u("uLight");
+    const uInk = u("uInk");
+    // The plate prints in the chapter's ink, read from the page now and then (it eases between
+    // chapters, so every few frames is plenty).
+    let inkFrame = 0;
+    const readInk = () => {
+      // "#1f3540" at rest, "rgba(31, 53, 64, 1)" while it blends.
+      const value = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim();
+      const hex = value.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i);
+      const rgb = value.match(/rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/i);
+      const c = hex ? hex.slice(1).map((h) => parseInt(h, 16)) : rgb ? rgb.slice(1).map(Number) : null;
+      if (c) gl.uniform3f(uInk, c[0] / 255, c[1] / 255, c[2] / 255);
+    };
     gl.uniform1i(u("uImg"), 0);
     gl.uniform1i(u("uDepth"), 1);
     gl.uniform1f(uZoom, fit === "cover" ? 1 + strength * 0.8 : 1);
@@ -200,6 +213,7 @@ export function DepthPlate({
       gl.uniform2f(uShift, eased.x * strength, (eased.y * 0.7 - through * 0.9) * strength);
       // The lamp sits at the cursor, seen from this plate.
       gl.uniform2f(uLight, eased.x * 1.4 - (r.left + r.width / 2) / window.innerWidth + 0.5, eased.y * 1.4 - through * 1.2);
+      if (inkFrame++ % 6 === 0) readInk();
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       raf = requestAnimationFrame(frame);
