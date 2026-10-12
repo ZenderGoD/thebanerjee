@@ -159,3 +159,16 @@ export const projects: {
     line: "Upload a photo of an empty room and get interior design renders back.",
   },
 ];
+
+export const tools = [
+  "Swift",
+  "SwiftUI",
+  "Next.js",
+  "TypeScript",
+  "Convex",
+  "Python",
+  "PyTorch",
+  "WebRTC",
+  "Vercel",
+  "Cloudflare",
+];

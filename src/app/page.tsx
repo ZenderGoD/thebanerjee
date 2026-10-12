@@ -3,6 +3,7 @@ import { ArrowUpRight, ArrowDown } from "@phosphor-icons/react/dist/ssr";
 import { Choreography } from "@/components/edition/Choreography";
 import { VoiceIsland } from "@/components/edition/VoiceIsland";
 import { Caption } from "@/components/edition/Caption";
+import { Lens } from "@/components/edition/Lens";
 import {
   chapters,
   credits,
@@ -10,6 +11,7 @@ import {
   labWorks,
   profile,
   projects,
+  tools,
   rareFacts,
   rocketCaptions,
   wisperModes,
@@ -27,6 +29,7 @@ export default function Home() {
   return (
     <>
       <Choreography />
+      <div className="fixed top-0 left-0 z-50 h-[3px] w-full origin-left scale-x-0 bg-red" data-progress aria-hidden />
 
       <header className="fixed inset-x-0 top-0 z-40 flex h-16 items-center justify-between px-5 mix-blend-difference text-paper md:px-8">
         <a href="#prologue" className="display text-[22px] tracking-normal">
@@ -65,7 +68,7 @@ export default function Home() {
           className="relative grid min-h-[100dvh] grid-cols-1 overflow-hidden px-5 pt-24 pb-10 md:grid-cols-12 md:px-8 md:pt-20"
         >
           <div className="relative z-10 flex flex-col justify-end md:col-span-7 md:pb-8 lg:pl-40">
-            <h1 className="display text-[clamp(72px,9.6vw,172px)]" data-hero-title>
+            <h1 className="display text-[clamp(72px,9.6vw,172px)]" data-hero-title data-depth="-10">
               <span className="block overflow-hidden pb-[0.04em]">
                 <span className="block" data-rise>
                   Bishal
@@ -91,10 +94,11 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative mt-10 md:col-span-5 md:mt-0" data-hero-plate>
+          <div className="relative mt-10 md:col-span-5 md:mt-0" data-hero-plate data-depth="16">
             <div
               className="absolute top-[9%] left-[30%] aspect-square w-[46%] rounded-full bg-red"
               data-sun
+              data-depth="34"
               aria-hidden
             />
             <Image
@@ -166,7 +170,7 @@ export default function Home() {
           <dl className="mt-14 grid gap-10 sm:grid-cols-[auto_auto] sm:justify-start sm:gap-20">
             {rareFacts.map((f) => (
               <div key={f.value} data-fade-up>
-                <dt className="display wide text-[clamp(64px,7vw,112px)] text-red">{f.value}</dt>
+                <dt className="display wide text-[clamp(64px,7vw,112px)] text-red" data-count>{f.value}</dt>
                 <dd className="mt-2 max-w-[28ch] text-[16px] leading-snug text-ink-soft">{f.label}</dd>
               </div>
             ))}
@@ -249,6 +253,7 @@ export default function Home() {
               {wisperModes.map((m, i) => (
                 <article
                   key={m.name}
+                  data-panel
                   className={`flex w-[78vw] shrink-0 flex-col justify-end border-[1.5px] border-ink p-6 shadow-[6px_6px_0_var(--color-ink)] md:h-[52dvh] md:w-[30vw] md:p-9 ${
                     i === 1 ? "bg-red text-paper" : "bg-paper"
                   } ${i % 2 ? "md:translate-y-[7dvh]" : "md:-translate-y-[5dvh]"}`}
@@ -277,12 +282,10 @@ export default function Home() {
             <h2 className="display relative z-10 max-w-[12ch] text-[clamp(52px,7vw,120px)]">
               Small things, looked at <span className="text-red">closely.</span>
             </h2>
-            <Image
+            <Lens
               src={flea}
               alt="Robert Hooke's 1665 engraving of a flea seen through a microscope."
-              sizes="(min-width: 768px) 55vw, 100vw"
-              className="ink mt-8 h-auto w-full md:absolute md:top-[10px] md:right-[-4%] md:mt-0 md:w-[46%]"
-              data-flea
+              className="mt-8 w-full md:absolute md:top-[10px] md:right-[-4%] md:mt-0 md:w-[46%]"
             />
           </div>
 
@@ -315,6 +318,21 @@ export default function Home() {
           </div>
         </section>
 
+        <div className="overflow-hidden border-y-[1.5px] border-ink bg-ink py-5 text-paper" aria-label="Tools I build with">
+          <div className="flex w-max" data-marquee>
+            {[0, 1].map((copy) => (
+              <ul key={copy} className="flex shrink-0 items-center" aria-hidden={copy === 1}>
+                {tools.map((t) => (
+                  <li key={t} className="display flex items-center text-[clamp(36px,4vw,64px)]">
+                    <span className="px-7">{t}</span>
+                    <span className="h-3 w-3 rounded-full bg-red" aria-hidden />
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        </div>
+
         {/* VII. The workshop */}
         <section
           id="workshop"
@@ -335,7 +353,8 @@ export default function Home() {
                   href={p.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="group block border-[1.5px] border-ink bg-paper shadow-[6px_6px_0_var(--color-ink)] transition-transform duration-300 hover:-translate-y-1"
+                  className="group block overflow-hidden border-[1.5px] border-ink bg-paper shadow-[6px_6px_0_var(--color-ink)] [transform-style:preserve-3d]"
+                  data-tilt
                 >
                   <Image
                     src={p.image!}
@@ -343,7 +362,8 @@ export default function Home() {
                     width={1200}
                     height={750}
                     sizes="(min-width: 768px) 40vw, 100vw"
-                    className="h-auto w-full grayscale transition-[filter] duration-500 group-hover:grayscale-0"
+                    className="h-auto w-full scale-[1.12] grayscale transition-[filter] duration-500 group-hover:grayscale-0"
+                    data-shift
                   />
                 </a>
                 <figcaption className="mt-5 flex items-start justify-between gap-6">
@@ -406,7 +426,7 @@ export default function Home() {
             />
           </div>
           <div className="relative z-10 flex min-h-[100dvh] flex-col justify-end px-5 pb-10 md:px-8 lg:pl-48">
-            <div className="max-w-[900px] bg-paper p-6 md:p-10" data-fade-up>
+            <div className="max-w-[900px] border-[1.5px] border-ink bg-paper p-6 shadow-[6px_6px_0_var(--color-ink)] md:p-10" data-card>
               <h2 className="display text-[clamp(56px,8vw,132px)]">
                 Let&apos;s build <span className="text-red">something.</span>
               </h2>

@@ -3,9 +3,10 @@
 import { useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 import Lenis from "lenis";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const q = <T extends Element = HTMLElement>(sel: string) => gsap.utils.toArray<T>(sel);
 
@@ -53,8 +54,50 @@ export function Choreography() {
         scrollTrigger: { trigger: "#prologue", start: "top top", end: "bottom top", scrub: true },
       });
 
-      // Headlines and paragraphs arrive as they enter.
-      q("[data-split], [data-fade-up]").forEach((el) => {
+      // A thin red line keeps your place in the story.
+      gsap.to("[data-progress]", {
+        scaleX: 1,
+        ease: "none",
+        scrollTrigger: { start: 0, end: "max", scrub: 0.3 },
+      });
+
+      // Chapter titles are set line by line, rising from behind a mask.
+      const splits: SplitText[] = [];
+      document.fonts.ready.then(() => {
+        q("[data-split]").forEach((el) => {
+          const split = SplitText.create(el, { type: "lines", mask: "lines", linesClass: "pb-[0.06em]" });
+          splits.push(split);
+          gsap.from(split.lines, {
+            yPercent: 110,
+            duration: 1.2,
+            stagger: 0.09,
+            ease: "expo.out",
+            scrollTrigger: { trigger: el, start: "top 85%" },
+          });
+        });
+        ScrollTrigger.refresh();
+      });
+
+      // Figures count up to their real value as they arrive.
+      q("[data-count]").forEach((el) => {
+        const final = el.textContent ?? "";
+        const state = { p: 0 };
+        gsap.to(state, {
+          p: 1,
+          duration: 1.6,
+          ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 85%" },
+          onUpdate: () => {
+            el.textContent = final.replace(/\d+/g, (n) => String(Math.round(Number(n) * state.p)));
+          },
+          onComplete: () => {
+            el.textContent = final;
+          },
+        });
+      });
+
+      // Paragraphs and cards arrive as they enter.
+      q("[data-fade-up]").forEach((el) => {
         gsap.from(el, {
           opacity: 0,
           y: 36,
@@ -81,8 +124,43 @@ export function Choreography() {
       });
       gsap.fromTo(
         "[data-flea]",
-        { yPercent: 10, rotate: -3 },
-        { yPercent: -10, rotate: 2, ease: "none", scrollTrigger: { trigger: "#lab", start: "top bottom", end: "bottom top", scrub: true } },
+        { yPercent: 10 },
+        { yPercent: -10, ease: "none", scrollTrigger: { trigger: "#lab", start: "top bottom", end: "bottom top", scrub: true } },
+      );
+
+      // The tools run sideways, faster and backwards with the reader's scrolling.
+      const band = document.querySelector<HTMLElement>("[data-marquee]");
+      let marquee: gsap.core.Tween | undefined;
+      let marqueeTrigger: ScrollTrigger | undefined;
+      if (band) {
+        marquee = gsap.to(band, { xPercent: -50, duration: 38, ease: "none", repeat: -1 });
+        marqueeTrigger = ScrollTrigger.create({
+          trigger: band,
+          start: "top bottom",
+          end: "bottom top",
+          onUpdate: (self) => {
+            const v = self.getVelocity() / 300;
+            const speed = gsap.utils.clamp(-6, 6, self.direction * Math.max(1, Math.abs(v)));
+            gsap.to(marquee!, { timeScale: speed, duration: 0.2, overwrite: true });
+            gsap.to(marquee!, { timeScale: self.direction, duration: 1.2, delay: 0.2, ease: "power2.out" });
+          },
+        });
+      }
+
+      // Each project shot shifts inside its frame, a window onto the page behind it.
+      q("[data-shift]").forEach((img) => {
+        gsap.fromTo(
+          img,
+          { yPercent: -6 },
+          { yPercent: 6, ease: "none", scrollTrigger: { trigger: img.parentElement, start: "top bottom", end: "bottom top", scrub: true } },
+        );
+      });
+
+      // The contact card rises a little faster than the sky behind it.
+      gsap.fromTo(
+        "[data-card]",
+        { y: 120 },
+        { y: 0, ease: "none", scrollTrigger: { trigger: "[data-epilogue]", start: "top bottom", end: "bottom bottom", scrub: true } },
       );
 
       // VII. The sky opens around the traveller.
@@ -97,6 +175,9 @@ export function Choreography() {
       );
 
       return () => {
+        splits.forEach((sp) => sp.revert());
+        marquee?.kill();
+        marqueeTrigger?.kill();
         document.removeEventListener("click", onClick);
         gsap.ticker.remove(tick);
         lenis.destroy();
@@ -121,7 +202,7 @@ export function Choreography() {
       const track = document.querySelector<HTMLElement>("[data-pan-track]");
       if (pan && track) {
         const distance = () => track.scrollWidth - window.innerWidth;
-        gsap.to(track, {
+        const panTween = gsap.to(track, {
           x: () => -distance(),
           ease: "none",
           scrollTrigger: {
@@ -133,7 +214,88 @@ export function Choreography() {
             invalidateOnRefresh: true,
           },
         });
+        // Panels drift at their own heights as they pass, like cards on a table.
+        q("[data-panel]").forEach((panel, i) => {
+          gsap.fromTo(
+            panel,
+            { y: i % 2 ? -60 : 70, rotate: i % 2 ? 1.2 : -1.2 },
+            {
+              y: i % 2 ? 50 : -40,
+              rotate: 0,
+              ease: "none",
+              scrollTrigger: { trigger: panel, containerAnimation: panTween, start: "left right", end: "right left", scrub: true },
+            },
+          );
+        });
       }
+    });
+
+    mm.add("(prefers-reduced-motion: no-preference) and (pointer: fine)", () => {
+      const cleanups: (() => void)[] = [];
+
+      // I. The opening has depth: the sun, the plate and the name move apart under the pointer.
+      const hero = document.querySelector<HTMLElement>("#prologue");
+      if (hero) {
+        const layers = q("[data-depth]").map((el) => ({
+          depth: Number(el.getAttribute("data-depth")),
+          x: gsap.quickTo(el, "x", { duration: 0.9, ease: "power3.out" }),
+          y: gsap.quickTo(el, "y", { duration: 0.9, ease: "power3.out" }),
+        }));
+        const move = (e: PointerEvent) => {
+          const nx = e.clientX / window.innerWidth - 0.5;
+          const ny = e.clientY / window.innerHeight - 0.5;
+          layers.forEach((l) => {
+            l.x(nx * l.depth);
+            l.y(ny * l.depth);
+          });
+        };
+        hero.addEventListener("pointermove", move);
+        cleanups.push(() => hero.removeEventListener("pointermove", move));
+      }
+
+      // Project shots lean toward the pointer.
+      q("[data-tilt]").forEach((card) => {
+        gsap.set(card, { transformPerspective: 900 });
+        const rx = gsap.quickTo(card, "rotationX", { duration: 0.5, ease: "power3.out" });
+        const ry = gsap.quickTo(card, "rotationY", { duration: 0.5, ease: "power3.out" });
+        const move = (e: PointerEvent) => {
+          const r = card.getBoundingClientRect();
+          ry(((e.clientX - r.left) / r.width - 0.5) * 8);
+          rx(-((e.clientY - r.top) / r.height - 0.5) * 8);
+        };
+        const leave = () => {
+          rx(0);
+          ry(0);
+        };
+        card.addEventListener("pointermove", move);
+        card.addEventListener("pointerleave", leave);
+        cleanups.push(() => {
+          card.removeEventListener("pointermove", move);
+          card.removeEventListener("pointerleave", leave);
+        });
+      });
+
+      // Buttons lean toward the pointer, then settle back.
+      q(".btn").forEach((btn) => {
+        const x = gsap.quickTo(btn, "x", { duration: 0.4, ease: "power3.out" });
+        const y = gsap.quickTo(btn, "y", { duration: 0.4, ease: "power3.out" });
+        const move = (e: PointerEvent) => {
+          const r = btn.getBoundingClientRect();
+          x((e.clientX - r.left - r.width / 2) * 0.25);
+          y((e.clientY - r.top - r.height / 2) * 0.35);
+        };
+        const leave = () => {
+          gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.45)" });
+        };
+        btn.addEventListener("pointermove", move);
+        btn.addEventListener("pointerleave", leave);
+        cleanups.push(() => {
+          btn.removeEventListener("pointermove", move);
+          btn.removeEventListener("pointerleave", leave);
+        });
+      });
+
+      return () => cleanups.forEach((c) => c());
     });
 
     mm.add("(max-width: 767px)", () => {
