@@ -16,7 +16,8 @@ export const chapters = [
   { id: "imai", numeral: "IV", label: "The studio" },
   { id: "wisper", numeral: "V", label: "The voice" },
   { id: "lab", numeral: "VI", label: "The lab" },
-  { id: "epilogue", numeral: "VII", label: "Epilogue" },
+  { id: "workshop", numeral: "VII", label: "The workshop" },
+  { id: "epilogue", numeral: "VIII", label: "Epilogue" },
 ] as const;
 
 export const rocketCaptions = [
@@ -96,3 +97,65 @@ export const education = [
 
 export const credits =
   "Engravings: Albrecht Dürer, Leonardo da Vinci, Jost Amman, Robert Hooke, the Flammarion woodcut (public domain), and Athanasius Kircher via Wellcome Collection (CC BY 4.0).";
+
+// Projects with a live site get a picture of it; the rest get their icon or the red sun.
+export const projects: {
+  name: string;
+  kind: string;
+  line: string;
+  href?: string;
+  image?: string;
+  icon?: string;
+}[] = [
+  {
+    name: "AeroIntel",
+    kind: "Product",
+    line: "Live flight tracking for flying schools: every aircraft on a 3D globe, with weather and airport radar.",
+    href: "https://aeroplane-mu.vercel.app",
+    image: "/work/aerointel.webp",
+  },
+  {
+    name: "RentCloths",
+    kind: "Product",
+    line: "Rent outfits from other people's closets, with pickup, cleaning and returns handled for you.",
+    href: "https://fas-o-rent.vercel.app",
+    image: "/work/rentcloths.webp",
+  },
+  {
+    name: "YumYard",
+    kind: "Client",
+    line: "Ordering for a cafe: scan at the table or order home, with live kitchen status and an owner dashboard.",
+    href: "https://yumyardfinal.vercel.app",
+    image: "/work/yumyard.webp",
+  },
+  {
+    name: "Zephsole",
+    kind: "Studio",
+    line: "A studio for designing footwear with AI, from first sketch to a finished render.",
+    href: "https://zephsole.vercel.app",
+    image: "/work/zephsole.webp",
+  },
+  {
+    name: "Camera Bubble",
+    kind: "Mac app",
+    line: "A private camera overlay with its own stopwatch, for recording demos.",
+    href: "https://github.com/ZenderGoD/camera-bubble",
+    icon: "/work/camera-bubble.webp",
+  },
+  {
+    name: "Deadline Bubble",
+    kind: "Mac app",
+    line: "A split-flap countdown that stays on top and turns from green to red as time runs out.",
+    icon: "/work/deadline-bubble.webp",
+  },
+  {
+    name: "Atherum",
+    kind: "Engine",
+    line: "Many AI agents deliberate in rounds and return one verdict on content, strategy or decisions.",
+  },
+  {
+    name: "VAST",
+    kind: "Product",
+    line: "Upload a photo of an empty room and get interior design renders back.",
+  },
+];

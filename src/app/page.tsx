@@ -9,6 +9,7 @@ import {
   education,
   labWorks,
   profile,
+  projects,
   rareFacts,
   rocketCaptions,
   wisperModes,
@@ -20,6 +21,7 @@ import jerome from "../../public/art/jerome.webp";
 import tube from "../../public/art/tube.webp";
 import flea from "../../public/art/flea.webp";
 import flammarion from "../../public/art/flammarion.webp";
+import wisperIcon from "../../public/work/wisper-back.webp";
 
 export default function Home() {
   return (
@@ -204,54 +206,64 @@ export default function Home() {
           </div>
         </section>
 
-        {/* V. The voice: the one night chapter */}
+        {/* V. The voice */}
         <section
           id="wisper"
           data-chapter="wisper"
-          className="on-night relative overflow-hidden bg-night text-paper"
-          data-night
+          className="relative overflow-hidden border-t-[1.5px] border-ink"
         >
-          <div className="relative flex min-h-[100dvh] flex-col justify-center px-5 pt-28 pb-20 md:px-8 lg:pl-48">
+          <div className="relative flex min-h-[100dvh] flex-col justify-center px-5 pt-28 pb-16 md:px-8 lg:pl-48">
             <Image
               src={tube}
               alt="Athanasius Kircher's 1673 engraving of speaking tubes carrying voices from a courtyard into the rooms of a house."
-              sizes="100vw"
-              className="ink-night pointer-events-none absolute top-0 right-0 h-auto w-full opacity-30 [mask-image:linear-gradient(to_left,black_35%,transparent_85%)] md:w-[68%]"
+              sizes="(min-width: 768px) 46vw, 100vw"
+              className="ink pointer-events-none mb-10 h-auto w-full md:absolute md:top-20 md:right-0 md:mb-0 md:w-[46%]"
               data-tube
             />
-            <div className="relative">
-              <h2 className="display text-[clamp(64px,11vw,190px)]" data-split>
+            <div className="relative z-10 max-w-[560px]">
+              <Image
+                src={wisperIcon}
+                alt="The Wisper Back app icon."
+                sizes="88px"
+                className="h-[72px] w-[72px] md:h-[88px] md:w-[88px]"
+                data-fade-up
+              />
+              <h2 className="display mt-6 text-[clamp(64px,10vw,172px)]" data-split>
                 Wisper <span className="text-red">Back</span>
               </h2>
-              <p className="mt-6 max-w-[40ch] text-[19px] leading-[1.5] text-paper/75 md:text-[21px]">
+              <p className="mt-6 max-w-[34ch] text-[19px] leading-[1.5] text-ink-soft md:text-[21px]">
                 A Mac app I design, build and ship on my own. Hold a key and talk: it writes for
                 you, reads to you, and answers back.
               </p>
             </div>
-            <div className="relative mt-14">
+            <div className="relative z-10 mt-14 bg-paper md:mt-24">
               <VoiceIsland />
             </div>
           </div>
 
-          <div className="relative" data-pan>
-            <div className="flex w-max gap-0 bg-night pl-5 md:h-[100dvh] md:items-center md:pl-8 lg:pl-48" data-pan-track>
-              {wisperModes.map((m) => (
+          <div className="relative overflow-hidden" data-pan>
+            <div
+              className="flex w-max items-center gap-8 py-16 pr-[12vw] pl-5 md:h-[100dvh] md:gap-12 md:py-0 md:pl-8 lg:pl-48"
+              data-pan-track
+            >
+              {wisperModes.map((m, i) => (
                 <article
                   key={m.name}
-                  className="flex w-[86vw] flex-col justify-between border-l-[1.5px] border-paper/20 px-6 py-12 md:h-[64dvh] md:w-[38vw] md:px-10"
+                  className={`flex w-[78vw] shrink-0 flex-col justify-end border-[1.5px] border-ink p-6 shadow-[6px_6px_0_var(--color-ink)] md:h-[52dvh] md:w-[30vw] md:p-9 ${
+                    i === 1 ? "bg-red text-paper" : "bg-paper"
+                  } ${i % 2 ? "md:translate-y-[7dvh]" : "md:-translate-y-[5dvh]"}`}
                 >
-                  <span className="h-3 w-3 bg-red" aria-hidden />
-                  <div>
-                    <h3 className="display text-[clamp(44px,5vw,84px)]">{m.name}</h3>
-                    <p className="mt-4 max-w-[30ch] text-[18px] leading-[1.5] text-paper/70">{m.line}</p>
-                  </div>
+                  <h3 className="display text-[clamp(44px,4.4vw,76px)]">{m.name}</h3>
+                  <p className={`mt-4 max-w-[30ch] text-[17px] leading-[1.5] ${i === 1 ? "text-paper/90" : "text-ink-soft"}`}>
+                    {m.line}
+                  </p>
                 </article>
               ))}
-              <div className="flex w-[86vw] flex-col justify-center gap-6 border-l-[1.5px] border-paper/20 px-6 py-12 md:h-[64dvh] md:w-[38vw] md:px-10">
-                <p className="max-w-[24ch] text-[22px] leading-[1.4] text-paper/85">
+              <div className="flex w-[78vw] shrink-0 flex-col gap-6 md:w-[26vw]">
+                <p className="max-w-[24ch] text-[22px] leading-[1.4]">
                   Signed, notarised and updated on its own, on every Mac with Apple silicon.
                 </p>
-                <a href={profile.wisperBack} target="_blank" rel="noreferrer" className="btn btn-line self-start">
+                <a href={profile.wisperBack} target="_blank" rel="noreferrer" className="btn btn-solid self-start">
                   Get Wisper Back <ArrowUpRight size={15} weight="bold" />
                 </a>
               </div>
@@ -303,7 +315,82 @@ export default function Home() {
           </div>
         </section>
 
-        {/* VII. Epilogue */}
+        {/* VII. The workshop */}
+        <section
+          id="workshop"
+          data-chapter="workshop"
+          className="relative border-t-[1.5px] border-ink px-5 py-24 md:px-8 md:py-32 lg:pl-48"
+        >
+          <h2 className="display max-w-[14ch] text-[clamp(52px,7vw,120px)]" data-split>
+            Built after <span className="text-red">hours.</span>
+          </h2>
+          <p className="mt-6 max-w-[48ch] text-[19px] leading-[1.55] text-ink-soft">
+            Products, client sites and small Mac apps, most of them made end to end on my own.
+          </p>
+
+          <div className="mt-16 grid gap-x-10 gap-y-16 md:grid-cols-2">
+            {projects.filter((p) => p.image).map((p, i) => (
+              <figure key={p.name} className={i % 2 ? "md:mt-24" : ""} data-fade-up>
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group block border-[1.5px] border-ink bg-paper shadow-[6px_6px_0_var(--color-ink)] transition-transform duration-300 hover:-translate-y-1"
+                >
+                  <Image
+                    src={p.image!}
+                    alt={`The ${p.name} website.`}
+                    width={1200}
+                    height={750}
+                    sizes="(min-width: 768px) 40vw, 100vw"
+                    className="h-auto w-full grayscale transition-[filter] duration-500 group-hover:grayscale-0"
+                  />
+                </a>
+                <figcaption className="mt-5 flex items-start justify-between gap-6">
+                  <div>
+                    <h3 className="display text-[clamp(32px,3vw,48px)]">{p.name}</h3>
+                    <p className="mt-2 max-w-[44ch] text-[16px] leading-[1.5] text-ink-soft">{p.line}</p>
+                  </div>
+                  <span className="shrink-0 pt-2 font-mono text-[12px] uppercase text-muted">{p.kind}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+
+          <div className="mt-24 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {projects.filter((p) => !p.image).map((p) => {
+              const body = (
+                <>
+                  {p.icon ? (
+                    <Image src={p.icon} alt="" width={56} height={56} className="h-14 w-14 grayscale" />
+                  ) : (
+                    <span className="block h-14 w-14 rounded-full bg-red" aria-hidden />
+                  )}
+                  <h3 className="display mt-6 text-[32px]">{p.name}</h3>
+                  <p className="mt-2 text-[15px] leading-[1.5] text-ink-soft">{p.line}</p>
+                  <span className="mt-auto pt-6 font-mono text-[12px] uppercase text-muted">
+                    <span className="inline-flex items-center gap-1">
+                      {p.kind}
+                      {p.href && <ArrowUpRight size={13} weight="bold" />}
+                    </span>
+                  </span>
+                </>
+              );
+              const cls = "caption-card flex min-h-[300px] flex-col border-[1.5px] border-ink bg-paper p-6";
+              return p.href ? (
+                <a key={p.name} href={p.href} target="_blank" rel="noreferrer" className={`${cls} transition-colors hover:bg-paper-deep`} data-fade-up>
+                  {body}
+                </a>
+              ) : (
+                <div key={p.name} className={cls} data-fade-up>
+                  {body}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* VIII. Epilogue */}
         <section
           id="epilogue"
           data-chapter="epilogue"

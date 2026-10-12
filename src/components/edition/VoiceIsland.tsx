@@ -82,14 +82,14 @@ export function VoiceIsland() {
           }}
           onContextMenu={(e) => e.preventDefault()}
           className={`grid h-28 w-28 shrink-0 touch-none select-none place-items-center rounded-full border-[1.5px] font-mono text-[12px] uppercase tracking-[0.06em] transition-[transform,background-color,color] duration-200 ${
-            live ? "scale-95 border-red bg-red text-paper" : "border-paper text-paper hover:bg-paper hover:text-night"
+            live ? "scale-95 border-red bg-red text-paper" : "border-ink bg-paper text-ink hover:bg-ink hover:text-paper"
           }`}
         >
           {live ? "Talking" : "Hold"}
         </button>
 
         <div
-          className="flex h-14 w-full min-w-0 items-center gap-4 rounded-full bg-black px-5 sm:flex-1 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] md:w-[460px] md:flex-none"
+          className="flex h-14 w-full min-w-0 items-center gap-4 border-[1.5px] border-ink bg-paper px-5 shadow-[5px_5px_0_var(--color-ink)] sm:flex-1 md:w-[460px] md:flex-none"
           role="status"
           aria-live="polite"
         >
@@ -97,7 +97,7 @@ export function VoiceIsland() {
             {Array.from({ length: BAR_COUNT }).map((_, i) => (
               <span
                 key={i}
-                className="block w-[3px] rounded-full bg-paper/80"
+                className="block w-[3px] bg-ink"
                 style={{
                   height: live ? undefined : 4,
                   animation: live ? `voice-bar 0.${5 + (i % 4)}s ease-in-out ${i * 0.06}s infinite alternate` : "none",
@@ -105,20 +105,20 @@ export function VoiceIsland() {
               />
             ))}
           </div>
-          <p className="min-w-0 flex-1 truncate text-right text-[15px] text-paper/90" dir="ltr">
-            {phase === "idle" && <span className="text-paper/45">Hold the button, or press and hold space on it</span>}
+          <p className="min-w-0 flex-1 truncate text-right font-mono text-[13px] uppercase text-ink" dir="ltr">
+            {phase === "idle" && <span className="text-muted">Hold the button and talk</span>}
             {phase !== "idle" && shown}
             {live && <span className="ml-[2px] inline-block h-4 w-[2px] translate-y-[3px] animate-pulse bg-red" />}
           </p>
         </div>
       </div>
 
-      <div className="min-h-[88px] border-l-[1.5px] border-red pl-5">
-        <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-paper/45">
+      <div className="min-h-[88px] border-l-[3px] border-red pl-5">
+        <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-muted">
           {phase === "polishing" ? "Cleaning it up" : "Lands in your app as"}
         </p>
-        <p className="mt-2 text-[20px] leading-[1.45] text-paper md:text-[24px]">
-          {phase === "done" ? voicePolished.slice(0, typed) : <span className="text-paper/25">Your words, written properly.</span>}
+        <p className="mt-2 text-[20px] leading-[1.45] text-ink md:text-[24px]">
+          {phase === "done" ? voicePolished.slice(0, typed) : <span className="text-ink/30">Your words, written properly.</span>}
         </p>
       </div>
 
