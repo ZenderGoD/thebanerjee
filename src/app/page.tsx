@@ -4,8 +4,12 @@ import { Choreography } from "@/components/edition/Choreography";
 import { VoiceIsland } from "@/components/edition/VoiceIsland";
 import { Caption } from "@/components/edition/Caption";
 import { Lens } from "@/components/edition/Lens";
+import { Bridge } from "@/components/edition/Bridge";
+import { Thread } from "@/components/edition/Thread";
 import { DepthPlate } from "@/components/edition/DepthPlate";
 import {
+  beliefs,
+  bridges,
   chapters,
   credits,
   education,
@@ -61,11 +65,13 @@ export default function Home() {
         </ol>
       </nav>
 
-      <main>
+      <main className="relative">
+        <Thread />
         {/* I. Prologue */}
         <section
           id="prologue"
           data-chapter="prologue"
+          data-exit
           className="relative grid min-h-[100dvh] grid-cols-1 overflow-hidden px-5 pt-24 pb-10 md:grid-cols-12 md:px-8 md:pt-20"
         >
           <div className="relative z-10 flex flex-col justify-end md:col-span-7 md:pb-8 lg:pl-40">
@@ -99,6 +105,7 @@ export default function Home() {
             <div
               className="absolute top-[9%] left-[30%] aspect-square w-[46%] rounded-full bg-red"
               data-sun
+              data-thread
               data-depth="64"
               aria-hidden
             />
@@ -116,13 +123,15 @@ export default function Home() {
           </div>
         </section>
 
+        <Bridge text={bridges.rocket} />
+
         {/* II. The rocket */}
         <section id="rocket" data-chapter="rocket" className="relative" data-rocket>
           <div className="relative flex min-h-[100dvh] bg-paper flex-col justify-center overflow-hidden px-5 py-24 md:px-8 lg:pl-48">
             <h2 className="display relative z-10 text-[clamp(56px,9vw,150px)]" data-depth="-16">
               Mechatronics
               <br />
-              <span className="text-red">first.</span>
+              <span className="text-red" data-thread>first.</span>
             </h2>
             <div className="relative mt-8 md:absolute md:inset-y-0 md:right-0 md:mt-0 md:flex md:w-[62%] md:items-center">
               <DepthPlate
@@ -148,11 +157,14 @@ export default function Home() {
           </div>
         </section>
 
+        <Bridge text={bridges.rare} />
+
         {/* III. The allocation */}
         <section
           id="rare"
           data-chapter="rare"
-          className="relative overflow-hidden border-t-[1.5px] border-ink px-5 py-24 md:px-8 md:py-32 lg:pl-48"
+          data-exit
+          className="relative overflow-hidden px-5 py-24 md:px-8 md:py-32 lg:pl-48"
         >
           <p className="font-mono text-[12px] uppercase tracking-[0.12em] text-muted">
             The House of Rare, 2024
@@ -162,7 +174,7 @@ export default function Home() {
               Which shirt goes to <span className="text-red">which store.</span>
             </h2>
             <div className="relative md:col-span-4" data-float>
-              <div className="absolute -top-4 -left-4 h-full w-full bg-red" data-depth="44" aria-hidden />
+              <div className="absolute -top-4 -left-4 h-full w-full bg-red" data-depth="44" data-thread aria-hidden />
               <DepthPlate
                 src={tailor}
                 depth="/art/tailor-depth.webp"
@@ -190,11 +202,13 @@ export default function Home() {
           </dl>
         </section>
 
+        <Bridge text={bridges.imai} />
+
         {/* IV. The studio */}
         <section
           id="imai"
           data-chapter="imai"
-          className="relative grid border-t-[1.5px] border-ink md:grid-cols-2"
+          className="relative grid md:grid-cols-2"
         >
           <div className="relative md:sticky md:top-0 md:h-[100dvh] md:overflow-hidden" data-jerome>
             <DepthPlate
@@ -213,7 +227,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col justify-center gap-10 px-5 py-24 md:min-h-[150dvh] md:px-12 lg:px-16">
             <h2 className="display text-[clamp(52px,6.6vw,112px)]">
-              The quiet room where it gets <span className="text-red">built.</span>
+              The quiet room where it gets <span className="text-red" data-thread>built.</span>
             </h2>
             <p className="max-w-[46ch] text-[19px] leading-[1.55] text-ink-soft" data-fade-up data-depth="-8">
               Since 2025 I&apos;ve been the founding engineer at IMAI, which helps brands design, market
@@ -229,11 +243,13 @@ export default function Home() {
           </div>
         </section>
 
+        <Bridge text={bridges.wisper} />
+
         {/* V. The voice */}
         <section
           id="wisper"
           data-chapter="wisper"
-          className="relative overflow-hidden border-t-[1.5px] border-ink"
+          className="relative overflow-hidden"
         >
           <div className="relative flex min-h-[100dvh] flex-col justify-center px-5 pt-28 pb-16 md:px-8 lg:pl-48">
             <DepthPlate
@@ -256,7 +272,7 @@ export default function Home() {
                 data-fade-up
               />
               <h2 className="display mt-6 text-[clamp(64px,10vw,172px)]" data-split>
-                Wisper <span className="text-red">Back</span>
+                Wisper <span className="text-red" data-thread>Back</span>
               </h2>
               <p className="mt-6 max-w-[34ch] text-[19px] leading-[1.5] text-ink-soft md:text-[21px]" data-depth="-9">
                 A Mac app I design, build and ship on my own. Hold a key and talk: it writes for
@@ -301,11 +317,13 @@ export default function Home() {
           </div>
         </section>
 
+        <Bridge text={bridges.lab} />
+
         {/* VI. The lab */}
-        <section id="lab" data-chapter="lab" className="relative px-5 py-24 md:px-8 md:py-32 lg:pl-48">
+        <section id="lab" data-chapter="lab" data-exit className="relative px-5 py-24 md:px-8 md:py-32 lg:pl-48">
           <div className="relative">
             <h2 className="display relative z-10 max-w-[12ch] text-[clamp(52px,7vw,120px)]">
-              Small things, looked at <span className="text-red">closely.</span>
+              Small things, looked at <span className="text-red" data-thread>closely.</span>
             </h2>
             <Lens
               depth={24}
@@ -364,10 +382,11 @@ export default function Home() {
         <section
           id="workshop"
           data-chapter="workshop"
-          className="relative border-t-[1.5px] border-ink px-5 py-24 md:px-8 md:py-32 lg:pl-48"
+          data-exit
+          className="relative px-5 py-24 md:px-8 md:py-32 lg:pl-48"
         >
           <h2 className="display max-w-[14ch] text-[clamp(52px,7vw,120px)]" data-split>
-            Built after <span className="text-red">hours.</span>
+            Built after <span className="text-red" data-thread>hours.</span>
           </h2>
           <p className="mt-6 max-w-[48ch] text-[19px] leading-[1.55] text-ink-soft">
             Products, client sites and small Mac apps, most of them made end to end on my own.
@@ -438,11 +457,35 @@ export default function Home() {
           </div>
         </section>
 
-        {/* VIII. Epilogue */}
+        <Bridge text={bridges.beliefs} />
+
+        {/* VIII. What I believe */}
+        <section id="beliefs" data-chapter="beliefs" className="relative px-5 pb-[24vh] md:px-8 lg:pl-48">
+          <h2 className="display text-[clamp(56px,8vw,136px)]" data-split>
+            What I <span className="text-red" data-thread>believe.</span>
+          </h2>
+          <div className="mt-16 max-w-[1000px]">
+            {beliefs.map((b, i) => (
+              <article
+                key={b.line}
+                data-belief
+                className="lit sticky mb-[16vh] border-[1.5px] border-ink bg-paper p-7 [--s:8px] md:p-12"
+                style={{ top: `calc(13vh + ${i * 26}px)` }}
+              >
+                <p className="display text-[clamp(40px,5.6vw,96px)]">{b.line}</p>
+                <p className="mt-6 max-w-[50ch] text-[18px] leading-[1.55] text-ink-soft md:text-[20px]">{b.why}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <Bridge text={bridges.epilogue} />
+
+        {/* IX. Epilogue */}
         <section
           id="epilogue"
           data-chapter="epilogue"
-          className="relative min-h-[100dvh] overflow-hidden border-t-[1.5px] border-ink"
+          className="relative min-h-[100dvh] overflow-hidden"
           data-epilogue
         >
           <div className="absolute inset-0" data-peek>
@@ -461,7 +504,7 @@ export default function Home() {
           <div className="relative z-10 flex min-h-[100dvh] flex-col justify-end px-5 pb-10 md:px-8 lg:pl-48">
             <div className="max-w-[900px] border-[1.5px] border-ink bg-paper p-6 lit md:p-10 [--s:10px]" data-card data-depth="-20">
               <h2 className="display text-[clamp(56px,8vw,132px)]" data-depth="-12">
-                Let&apos;s build <span className="text-red">something.</span>
+                Let&apos;s build <span className="text-red" data-thread>something.</span>
               </h2>
               <a
                 href={`mailto:${profile.email}`}

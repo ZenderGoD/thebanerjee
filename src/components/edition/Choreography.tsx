@@ -112,6 +112,7 @@ export function Choreography() {
             scrollTrigger: { trigger: el, start: "top 85%" },
           });
         });
+        ScrollTrigger.sort();
         ScrollTrigger.refresh();
       });
 
@@ -130,6 +131,47 @@ export function Choreography() {
           onComplete: () => {
             el.textContent = final;
           },
+        });
+      });
+
+      // The bridges between chapters ink in word by word as they pass, like being read aloud.
+      q("[data-bridge]").forEach((bridge) => {
+        const words = gsap.utils.toArray<HTMLElement>("[data-word]", bridge);
+        gsap.fromTo(
+          words,
+          { color: "rgba(20, 20, 20, 0.13)", y: 10 },
+          {
+            color: (_i, el: HTMLElement) => (el.dataset.red ? "#c33b24" : "#141414"),
+            y: 0,
+            stagger: 0.5,
+            ease: "none",
+            scrollTrigger: { trigger: bridge, start: "top 78%", end: "bottom 52%", scrub: 0.5 },
+          },
+        );
+      });
+
+      // A chapter steps back as the next rises over it, so one flows into the next.
+      q("[data-exit]").forEach((section) => {
+        gsap.to(section, {
+          opacity: 0.3,
+          scale: 0.97,
+          transformOrigin: "50% 100%",
+          ease: "power1.in",
+          scrollTrigger: { trigger: section, start: "bottom 38%", end: "bottom top", scrub: true },
+        });
+      });
+
+      // Beliefs stack: each card settles on the last, and the ones beneath sink back.
+      const cards = q("[data-belief]");
+      cards.forEach((card, i) => {
+        const next = cards[i + 1];
+        if (!next) return;
+        gsap.to(card, {
+          scale: 0.94,
+          filter: "brightness(0.93)",
+          transformOrigin: "50% 0%",
+          ease: "none",
+          scrollTrigger: { trigger: next, start: "top 60%", end: () => `top ${Math.round(window.innerHeight * 0.13 + (i + 1) * 26)}px`, scrub: true },
         });
       });
 
@@ -343,6 +385,9 @@ export function Choreography() {
       }),
     );
 
+    // Triggers were made chapter by chapter, before and after the pins; order them by where they
+    // start on the page so later ones measure with the pin spacers in place.
+    ScrollTrigger.sort();
     ScrollTrigger.refresh();
 
     return () => {

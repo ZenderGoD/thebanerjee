@@ -17,7 +17,8 @@ export const chapters = [
   { id: "wisper", numeral: "V", label: "The voice" },
   { id: "lab", numeral: "VI", label: "The lab" },
   { id: "workshop", numeral: "VII", label: "The workshop" },
-  { id: "epilogue", numeral: "VIII", label: "Epilogue" },
+  { id: "beliefs", numeral: "VIII", label: "What I believe" },
+  { id: "epilogue", numeral: "IX", label: "Epilogue" },
 ] as const;
 
 export const rocketCaptions = [
@@ -171,4 +172,40 @@ export const tools = [
   "WebRTC",
   "Vercel",
   "Cloudflare",
+];
+
+// The lines that carry the reader from one chapter into the next, in Bishal's voice. Words in
+// [brackets] ink in red. Keyed by the chapter they lead into.
+export const bridges: Record<string, string> = {
+  rocket: "It starts with [machines], not code.",
+  rare: "That habit got me my first job. I didn't apply. I [messaged] the head of technology.",
+  imai: "From one company's stores to a studio that helps [any brand] make things.",
+  wisper: "IMAI's conversations got too long to read. So I made something that [reads them to you].",
+  lab: "The same curiosity runs through the [smaller] work.",
+  beliefs: "Everything I make comes back to a [few beliefs].",
+  epilogue: "Which brings me to [you].",
+};
+
+// What I believe: principles Bishal has said in his own words while building.
+export const beliefs = [
+  {
+    line: "Software should wait to be asked.",
+    why: "Nothing I build watches you in the background. It acts when you ask, stays on your Mac, and shows you what it did.",
+  },
+  {
+    line: "Use everything you have.",
+    why: "Every part of a product should draw on every capability it has, so the best answer arrives the fastest way.",
+  },
+  {
+    line: "Simple, then simpler.",
+    why: "One line, one layer. More appears only when someone asks for it.",
+  },
+  {
+    line: "Say what it really does.",
+    why: "My rocket never flew. I would rather tell you that than dress it up.",
+  },
+  {
+    line: "Anyone can build it.",
+    why: "I'll give the ones who can't a service they can subscribe to. The craft is in making it easy.",
+  },
 ];
