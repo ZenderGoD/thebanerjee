@@ -63,7 +63,7 @@ export function Lens({
       <div
         ref={glass}
         aria-hidden
-        className="pointer-events-none absolute top-0 left-0 hidden scale-[0.4] rounded-full border-[1.5px] border-ink bg-paper opacity-0 shadow-[6px_6px_0_var(--color-ink)] [@media(pointer:fine)]:block"
+        className="pointer-events-none absolute top-0 left-0 hidden scale-[0.4] rounded-full border-[1.5px] border-ink bg-paper opacity-0 lit [--s:8px] [@media(pointer:fine)]:block"
         style={{
           width: SIZE,
           height: SIZE,

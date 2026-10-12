@@ -40,6 +40,7 @@ uniform vec2 uShift;
 uniform vec4 uFit;
 uniform float uZoom;
 uniform float uBleed;
+uniform vec2 uLight;
 float depthAt(vec2 uv) { return texture2D(uDepth, uv).r; }
 void main() {
   // The canvas reaches past the picture by uBleed on each side, so near parts can travel out of
@@ -55,7 +56,20 @@ void main() {
   // Past the picture's edge there is only paper, never a smear of its last row.
   vec2 inside = smoothstep(vec2(0.0), vec2(0.004), at) * smoothstep(vec2(1.0), vec2(0.996), at);
   float l = texture2D(uImg, clamp(at, 0.0, 1.0)).r;
-  float ink = smoothstep(0.98, 0.08, l) * inside.x * inside.y;
+  float ink = smoothstep(0.98, 0.08, l);
+  // Raking light from the cursor: the depth map gives every surface a slope, so slopes turned
+  // away from the lamp take more ink and slopes facing it lose some, like a copper plate tilted
+  // under a light.
+  vec2 e = vec2(0.011, 0.0);
+  vec2 cl = clamp(at, 0.0, 1.0);
+  float dx = depthAt(cl + e.xy) - depthAt(cl - e.xy);
+  float dy = depthAt(cl + e.yx) - depthAt(cl - e.yx);
+  vec3 n = normalize(vec3(-dx * 7.0, -dy * 7.0, 1.0));
+  vec3 L = normalize(vec3(uLight, 0.85));
+  float lit = dot(n, L) - L.z;
+  // Only ink that is already there gets heavier or lighter, so blank paper stays clean.
+  ink = clamp(ink * clamp(1.0 - lit * 2.4, 0.5, 1.7), 0.0, 1.0);
+  ink *= inside.x * inside.y;
   gl_FragColor = vec4(vec3(0.078) * ink, ink);
 }`;
 
@@ -131,6 +145,7 @@ export function DepthPlate({
     const uShift = u("uShift");
     const uFit = u("uFit");
     const uZoom = u("uZoom");
+    const uLight = u("uLight");
     gl.uniform1i(u("uImg"), 0);
     gl.uniform1i(u("uDepth"), 1);
     gl.uniform1f(uZoom, fit === "cover" ? 1 + strength * 0.8 : 1);
@@ -183,6 +198,8 @@ export function DepthPlate({
       const r = el.getBoundingClientRect();
       const through = (r.top + r.height / 2) / window.innerHeight - 0.5;
       gl.uniform2f(uShift, eased.x * strength, (eased.y * 0.7 - through * 0.9) * strength);
+      // The lamp sits at the cursor, seen from this plate.
+      gl.uniform2f(uLight, eased.x * 1.4 - (r.left + r.width / 2) / window.innerWidth + 0.5, eased.y * 1.4 - through * 1.2);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       raf = requestAnimationFrame(frame);

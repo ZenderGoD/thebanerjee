@@ -23,6 +23,43 @@ export function Choreography() {
       gsap.ticker.add(tick);
       gsap.ticker.lagSmoothing(0);
 
+      // One scene, one clock. Each frame the pointer, the scroll speed, the lamp and the print
+      // register become CSS variables on the page; every [data-depth] element, lit shadow and
+      // title reads them, so nothing else needs its own loop.
+      const root = document.documentElement;
+      q("[data-depth]").forEach((el) => el.style.setProperty("--d", el.getAttribute("data-depth") ?? "0"));
+      const fine = window.matchMedia("(pointer: fine)").matches;
+      const aim = { x: 0, y: 0 };
+      const now = { x: 0, y: 0, v: 0 };
+      const written: Record<string, string> = {};
+      const write = (name: string, value: number) => {
+        const text = value.toFixed(3);
+        if (written[name] === text) return;
+        written[name] = text;
+        root.style.setProperty(name, text);
+      };
+      const aimAt = (e: PointerEvent) => {
+        aim.x = (e.clientX / window.innerWidth) * 2 - 1;
+        aim.y = (e.clientY / window.innerHeight) * 2 - 1;
+      };
+      if (fine) window.addEventListener("pointermove", aimAt, { passive: true });
+      const scene = () => {
+        now.x += (aim.x - now.x) * 0.075;
+        now.y += (aim.y - now.y) * 0.075;
+        const speed = gsap.utils.clamp(-1.6, 1.6, (lenis.velocity || 0) / 28);
+        now.v += (speed - now.v) * 0.14;
+        write("--px", now.x);
+        write("--py", now.y);
+        write("--vy", now.v);
+        // The lamp is the cursor: shadows fall away from it, longest when it is far off.
+        write("--lx", 0.55 - now.x * 1.35);
+        write("--ly", 0.55 - now.y * 1.35);
+        // The red plate drifts out of register with the pointer and slips when you scroll fast.
+        write("--mx", -now.x * 2.4 + now.v * 2.5);
+        write("--my", -now.y * 2.4 + now.v * 7);
+      };
+      gsap.ticker.add(scene);
+
       // In-page links glide instead of jump.
       const onClick = (e: MouseEvent) => {
         const a = (e.target as HTMLElement).closest('a[href^="#"]');
@@ -175,6 +212,9 @@ export function Choreography() {
       );
 
       return () => {
+        gsap.ticker.remove(scene);
+        window.removeEventListener("pointermove", aimAt);
+        ["--px", "--py", "--vy", "--lx", "--ly", "--mx", "--my"].forEach((n) => root.style.removeProperty(n));
         splits.forEach((sp) => sp.revert());
         marquee?.kill();
         marqueeTrigger?.kill();
@@ -232,24 +272,6 @@ export function Choreography() {
 
     mm.add("(prefers-reduced-motion: no-preference) and (pointer: fine)", () => {
       const cleanups: (() => void)[] = [];
-
-      // Every chapter has depth: engravings, red shapes, captions and titles each sit on their
-      // own layer and drift with the pointer. Positive depths follow it, negative ones move away.
-      const layers = q("[data-depth]").map((el) => ({
-        depth: Number(el.getAttribute("data-depth")),
-        x: gsap.quickTo(el, "x", { duration: 1.1, ease: "power3.out" }),
-        y: gsap.quickTo(el, "y", { duration: 1.1, ease: "power3.out" }),
-      }));
-      const follow = (e: PointerEvent) => {
-        const nx = e.clientX / window.innerWidth - 0.5;
-        const ny = e.clientY / window.innerHeight - 0.5;
-        layers.forEach((l) => {
-          l.x(nx * l.depth);
-          l.y(ny * l.depth);
-        });
-      };
-      window.addEventListener("pointermove", follow);
-      cleanups.push(() => window.removeEventListener("pointermove", follow));
 
       // Project shots lean toward the pointer.
       q("[data-tilt]").forEach((card) => {

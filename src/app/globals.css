@@ -54,6 +54,34 @@ body {
   font-variation-settings: "wdth" 112;
 }
 
+/* The page moves as one scene. Choreography sets, every frame:
+   --px, --py  the eased pointer, -1 to 1 across the window
+   --vy        the eased scroll speed
+   --lx, --ly  where hard shadows fall, away from the cursor as if it were a lamp
+   --mx, --my  how far the red plate is out of register
+   Without motion none are set, and everything rests where it was drawn. */
+[data-depth] {
+  translate: calc(var(--px, 0) * var(--d, 0) * 1px)
+    calc(var(--py, 0) * var(--d, 0) * 1px + var(--vy, 0) * var(--d, 0) * 0.6px);
+}
+
+/* A hard ink shadow lit by the cursor; --s is how far the thing floats above the paper. */
+.lit,
+.caption,
+.btn {
+  box-shadow: calc(var(--lx, 1) * var(--s, 6px)) calc(var(--ly, 1) * var(--s, 6px)) 0 var(--color-ink);
+}
+
+/* Titles print in two plates: ink, with red slightly out of register (and red words with ink). */
+.display {
+  text-shadow: calc(var(--mx, 0) * 1px) calc(var(--my, 0) * 1px) 0 rgb(195 59 36 / 0.34);
+}
+
+.display .text-red,
+.display.text-red {
+  text-shadow: calc(var(--mx, 0) * -1px) calc(var(--my, 0) * -1px) 0 rgb(20 20 20 / 0.22);
+}
+
 /* Engravings sit in the paper like ink, not on it like photos. */
 .ink {
   mix-blend-mode: multiply;
@@ -75,7 +103,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.02em;
   padding: 14px 16px;
-  box-shadow: 5px 5px 0 var(--color-ink);
+  --s: 5px;
 }
 
 .caption mark {
@@ -95,6 +123,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   white-space: nowrap;
+  --s: 3px;
   transition:
     background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
     color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
@@ -102,6 +131,7 @@ body {
 }
 
 .btn:active {
+  --s: 0px;
   transform: translateY(1px) scale(0.98);
 }
 
@@ -149,4 +179,9 @@ body {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* The header floats over everything in difference mode; it has no shadow to cast. */
+header .btn {
+  box-shadow: none;
 }

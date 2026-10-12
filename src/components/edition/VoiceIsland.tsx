@@ -89,7 +89,7 @@ export function VoiceIsland() {
         </button>
 
         <div
-          className="flex h-14 w-full min-w-0 items-center gap-4 border-[1.5px] border-ink bg-paper px-5 shadow-[5px_5px_0_var(--color-ink)] sm:flex-1 md:w-[460px] md:flex-none"
+          className="flex h-14 w-full min-w-0 items-center gap-4 border-[1.5px] border-ink bg-paper px-5 lit [--s:5px] sm:flex-1 md:w-[460px] md:flex-none"
           role="status"
           aria-live="polite"
         >

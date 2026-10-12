@@ -81,11 +81,11 @@ export default function Home() {
                 </span>
               </span>
             </h1>
-            <p className="mt-6 max-w-[34ch] text-[19px] leading-[1.45] text-ink-soft md:text-[21px]" data-fade>
+            <p className="mt-6 max-w-[34ch] text-[19px] leading-[1.45] text-ink-soft md:text-[21px]" data-fade data-depth="-9">
               I build software people talk to. Founding engineer at IMAI, and the maker of Wisper
               Back.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3" data-fade>
+            <div className="mt-8 flex flex-wrap gap-3" data-fade data-depth="-15">
               <a href={`mailto:${profile.email}`} className="btn btn-solid">
                 Write to me
               </a>
@@ -174,7 +174,7 @@ export default function Home() {
               />
             </div>
           </div>
-          <p className="mt-12 max-w-[60ch] text-[19px] leading-[1.55] text-ink-soft">
+          <p className="mt-12 max-w-[60ch] text-[19px] leading-[1.55] text-ink-soft" data-depth="-7">
             At the company behind Rare Rabbit, Rareism and RAREZ, I built the assortment and
             allocation model: which garments go to which store, and how many of each. I got in by
             messaging their head of technology, started as an intern, and shipped the first version
@@ -182,7 +182,7 @@ export default function Home() {
           </p>
           <dl className="mt-14 grid gap-10 sm:grid-cols-[auto_auto] sm:justify-start sm:gap-20">
             {rareFacts.map((f) => (
-              <div key={f.value} data-fade-up>
+              <div key={f.value} data-fade-up data-depth={f.value.length > 4 ? -24 : -14}>
                 <dt className="display wide text-[clamp(64px,7vw,112px)] text-red" data-count>{f.value}</dt>
                 <dd className="mt-2 max-w-[28ch] text-[16px] leading-snug text-ink-soft">{f.label}</dd>
               </div>
@@ -215,15 +215,15 @@ export default function Home() {
             <h2 className="display text-[clamp(52px,6.6vw,112px)]">
               The quiet room where it gets <span className="text-red">built.</span>
             </h2>
-            <p className="max-w-[46ch] text-[19px] leading-[1.55] text-ink-soft" data-fade-up>
+            <p className="max-w-[46ch] text-[19px] leading-[1.55] text-ink-soft" data-fade-up data-depth="-8">
               Since 2025 I&apos;ve been the founding engineer at IMAI, which helps brands design, market
               and manufacture products with AI. I build the backend, along with much of the product that sits on it.
             </p>
-            <p className="max-w-[46ch] text-[19px] leading-[1.55] text-ink-soft" data-fade-up>
+            <p className="max-w-[46ch] text-[19px] leading-[1.55] text-ink-soft" data-fade-up data-depth="-14">
               IMAI is also where Wisper Back began. I wanted its long conversations summarised and
               read aloud, and realised the engine was a product of its own.
             </p>
-            <a href={profile.imai} target="_blank" rel="noreferrer" className="btn btn-line self-start">
+            <a href={profile.imai} target="_blank" rel="noreferrer" className="btn btn-line self-start" data-depth="-20">
               Visit IMAI <ArrowUpRight size={15} weight="bold" />
             </a>
           </div>
@@ -258,12 +258,12 @@ export default function Home() {
               <h2 className="display mt-6 text-[clamp(64px,10vw,172px)]" data-split>
                 Wisper <span className="text-red">Back</span>
               </h2>
-              <p className="mt-6 max-w-[34ch] text-[19px] leading-[1.5] text-ink-soft md:text-[21px]">
+              <p className="mt-6 max-w-[34ch] text-[19px] leading-[1.5] text-ink-soft md:text-[21px]" data-depth="-9">
                 A Mac app I design, build and ship on my own. Hold a key and talk: it writes for
                 you, reads to you, and answers back.
               </p>
             </div>
-            <div className="relative z-10 mt-14 bg-paper md:mt-24">
+            <div className="relative z-10 mt-14 bg-paper md:mt-24" data-depth="-18">
               <VoiceIsland />
             </div>
           </div>
@@ -277,11 +277,13 @@ export default function Home() {
                 <article
                   key={m.name}
                   data-panel
-                  className={`flex w-[78vw] shrink-0 flex-col justify-end border-[1.5px] border-ink p-6 shadow-[6px_6px_0_var(--color-ink)] md:h-[52dvh] md:w-[30vw] md:p-9 ${
+                  className={`flex w-[78vw] shrink-0 flex-col justify-end border-[1.5px] border-ink p-6 lit md:h-[52dvh] md:w-[30vw] md:p-9 ${
                     i === 1 ? "bg-red text-paper" : "bg-paper"
                   } ${i % 2 ? "md:translate-y-[7dvh]" : "md:-translate-y-[5dvh]"}`}
                 >
-                  <h3 className="display text-[clamp(44px,4.4vw,76px)]">{m.name}</h3>
+                  <h3 className="display text-[clamp(44px,4.4vw,76px)]" data-depth="-14">
+                    {m.name}
+                  </h3>
                   <p className={`mt-4 max-w-[30ch] text-[17px] leading-[1.5] ${i === 1 ? "text-paper/90" : "text-ink-soft"}`}>
                     {m.line}
                   </p>
@@ -314,7 +316,7 @@ export default function Home() {
             />
           </div>
 
-          <div className="mt-16 grid gap-[1.5px] border-[1.5px] border-ink bg-ink md:mt-40 md:grid-cols-6">
+          <div className="lit mt-16 grid gap-[1.5px] border-[1.5px] border-ink bg-ink [--s:8px] md:mt-40 md:grid-cols-6" data-depth="-8">
             {labWorks.map((w, i) => {
               const span = ["md:col-span-4", "md:col-span-2", "md:col-span-2", "md:col-span-2", "md:col-span-2"][i];
               const tone =
@@ -333,7 +335,7 @@ export default function Home() {
             })}
           </div>
 
-          <div className="mt-16 grid gap-6 sm:grid-cols-3">
+          <div className="mt-16 grid gap-6 sm:grid-cols-3" data-depth="-14">
             {education.map((e) => (
               <div key={e.school} className="border-t-[1.5px] border-ink pt-4">
                 <p className="display text-[28px]">{e.school}</p>
@@ -343,7 +345,7 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="overflow-hidden border-y-[1.5px] border-ink bg-ink py-5 text-paper" aria-label="Tools I build with">
+        <div className="overflow-hidden border-y-[1.5px] border-ink bg-ink py-5 text-paper" aria-label="Tools I build with" data-depth="10">
           <div className="flex w-max" data-marquee>
             {[0, 1].map((copy) => (
               <ul key={copy} className="flex shrink-0 items-center" aria-hidden={copy === 1}>
@@ -378,7 +380,7 @@ export default function Home() {
                   href={p.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="group block overflow-hidden border-[1.5px] border-ink bg-paper shadow-[6px_6px_0_var(--color-ink)] [transform-style:preserve-3d]"
+                  className="group block overflow-hidden border-[1.5px] border-ink bg-paper lit [transform-style:preserve-3d]"
                   data-tilt
                 >
                   <Image
@@ -391,7 +393,7 @@ export default function Home() {
                     data-shift
                   />
                 </a>
-                <figcaption className="mt-5 flex items-start justify-between gap-6">
+                <figcaption className="mt-5 flex items-start justify-between gap-6" data-depth="-12">
                   <div>
                     <h3 className="display text-[clamp(32px,3vw,48px)]">{p.name}</h3>
                     <p className="mt-2 max-w-[44ch] text-[16px] leading-[1.5] text-ink-soft">{p.line}</p>
@@ -403,7 +405,7 @@ export default function Home() {
           </div>
 
           <div className="mt-24 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {projects.filter((p) => !p.image).map((p) => {
+            {projects.filter((p) => !p.image).map((p, k) => {
               const body = (
                 <>
                   {p.icon ? (
@@ -421,13 +423,14 @@ export default function Home() {
                   </span>
                 </>
               );
-              const cls = "caption-card flex min-h-[300px] flex-col border-[1.5px] border-ink bg-paper p-6";
+              const cls = "lit flex min-h-[300px] flex-col border-[1.5px] border-ink bg-paper p-6 [--s:5px]";
+              const depth = -6 - (k % 4) * 6;
               return p.href ? (
-                <a key={p.name} href={p.href} target="_blank" rel="noreferrer" className={`${cls} transition-colors hover:bg-paper-deep`} data-fade-up>
+                <a key={p.name} href={p.href} target="_blank" rel="noreferrer" className={`${cls} transition-colors hover:bg-paper-deep`} data-fade-up data-depth={depth}>
                   {body}
                 </a>
               ) : (
-                <div key={p.name} className={cls} data-fade-up>
+                <div key={p.name} className={cls} data-fade-up data-depth={depth}>
                   {body}
                 </div>
               );
@@ -456,7 +459,7 @@ export default function Home() {
             />
           </div>
           <div className="relative z-10 flex min-h-[100dvh] flex-col justify-end px-5 pb-10 md:px-8 lg:pl-48">
-            <div className="max-w-[900px] border-[1.5px] border-ink bg-paper p-6 shadow-[6px_6px_0_var(--color-ink)] md:p-10" data-card>
+            <div className="max-w-[900px] border-[1.5px] border-ink bg-paper p-6 lit md:p-10 [--s:10px]" data-card data-depth="-20">
               <h2 className="display text-[clamp(56px,8vw,132px)]" data-depth="-12">
                 Let&apos;s build <span className="text-red">something.</span>
               </h2>
